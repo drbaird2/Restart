@@ -34,9 +34,9 @@ bool Sphere::intersect(const Ray& ra, double& tMin, Record& recentHits)
 	}
 	else // one or two hit
 	{
-		double e = sqrt(disc);
+		double sqrtd = sqrt(disc);
 		double denom = 2.0 * a;
-		t = (-b - e) / denom;  //smaller root
+		t = (-b - sqrtd) / denom;  //smaller root
 
 		if (t > kEpsilon)
 		{
@@ -46,7 +46,7 @@ bool Sphere::intersect(const Ray& ra, double& tMin, Record& recentHits)
 			return true;
 		}
 
-		t = (-b + e) / denom; //larger root
+		t = (-b + sqrtd) / denom; //larger root
 		if (t > kEpsilon)
 		{
 			tMin = t;

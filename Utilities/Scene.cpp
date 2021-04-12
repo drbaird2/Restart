@@ -8,6 +8,7 @@
 
 //Objects
 #include "../Objects/Sphere.h"
+#include "../Objects/Plane.h"
 
 //Tracers
 #include "../Tracers/Raycast.h"
@@ -39,47 +40,47 @@ void Scene::build()
 
 	tracerPtr = make_shared<Raycast>(this);
 
-    shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
-	pinholePtr->setEye(0, 100, -100);
-	pinholePtr->setLookAt(0, -20, 0);
-	pinholePtr->setViewDistance(1000);
+    /* shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
+	pinholePtr->setEye(-100, 100, 100);
+	pinholePtr->setLookAt(0, 100, -100);
+	pinholePtr->setViewDistance(400);
 	pinholePtr->setZoom(1.0);
 	pinholePtr->ComputeUVW();
-	setCamera(pinholePtr);
+	setCamera(pinholePtr); */
 
-    /* shared_ptr<Orthographic> orthoPtr = make_shared<Orthographic>();
-	orthoPtr->setZWindow(500);
-	setCamera(orthoPtr); */
+    shared_ptr<Orthographic> orthoPtr = make_shared<Orthographic>();
+	orthoPtr->setZWindow(1000);
+	setCamera(orthoPtr);
 
 
 	shared_ptr<Sphere> sphere = make_shared<Sphere>();
-	sphere->setCenter(0, 0, 0);
+	sphere->setCenter(100, 100, 0);
 	sphere->setRadius(50);
 	sphere->setColor(Color(1, 1, 0));
 	addObject(sphere);
 
 	sphere.reset();
 	sphere = make_shared<Sphere>();
-	sphere->setCenter(-40, -50, 0);
-	sphere->setRadius(90);
+	sphere->setCenter(100, 100, -100);
+	sphere->setRadius(70);
 	sphere->setColor(Color(0, 1, 0));
 	addObject(sphere);
 
 	sphere.reset();
 	sphere = make_shared<Sphere>();
-	sphere->setCenter(60, 130, 0);
-	sphere->setRadius(70);
+	sphere->setCenter(100, 0, -100);
+	sphere->setRadius(50);
 	sphere->setColor(Color(0, 1, 1));
 	addObject(sphere);
 
-	sphere.reset();
+	/* sphere.reset();
 	sphere = make_shared<Sphere>(Point3(0, 30, 0), 60);
 	sphere->setColor(Color(1, 1, 0));
-	addObject(sphere);
+	addObject(sphere); */
 
-	/* std::shared_ptr<Plane> plane = std::make_shared<Plane>(Point3D(0, 0, 0), Normal(0, 1, 1));
-	plane->SetColor(RGBColor(0.3, 0.3, 0.3));
-	AddObject(plane);  */
+	shared_ptr<Plane> plane = make_shared<Plane>(Point3(100, 0, 0), Normal(-5, 25, -2));
+	plane->setColor(Color(0.3, 0.3, 0.3));
+	addObject(plane); 
 }
 
 void Scene::renderScene()
@@ -91,10 +92,10 @@ void Scene::renderScene()
 	
 	
 	ra.dir = Vec3(0, 0, -1);
-
+	//cout << "P3\n" << vp.vres << " " << vp.hres << "\n255\n";
 	for (int r = 0; r < vp.vres; r++) //up
 	{
-        std::cerr << "\rRendering: Row " << r << ' ' << std::flush;
+        cerr << "\rRendering: Row " << r << ' ' << std::flush;
 		for (int c = 0; c <= vp.hres; c++) //across
 		{
 			x = vp.ps * (c - 0.5 * (vp.hres - 1.0));
@@ -142,6 +143,11 @@ void Scene::DisplayPixel(const int row, const int column, const Color& rawColor)
 	mappedColor.blue = std::fmin(rawColor.blue,1);
 
     pixels.push_back(mappedColor);
+
+	/* cout << static_cast<int>(255.999 * mappedColor.red) << ' '
+    << static_cast<int>(255.999 * mappedColor.green) << ' '
+    << static_cast<int>(255.999 * mappedColor.blue) << '\n'; */
+
 }
 
 void Scene::save_bmp(const std::string& outputFile) const{

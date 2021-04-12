@@ -6,7 +6,7 @@ int main()
 {
     Scene wonderland;
 	wonderland.build();
-	wonderland.renderScene();
+	wonderland.cameraPtr->renderScene(wonderland);
     wonderland.save_bmp("output.bmp");
 
 	return 0;
