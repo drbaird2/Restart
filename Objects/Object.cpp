@@ -17,6 +17,9 @@ shared_ptr<Object> Object::clone() const{
     return make_shared<Object>(*this);
 }
 
+bool Object::intersect(const Ray& ra, double& t, Record& recentHits){
+    return false;
+}
 
 bool Object::shadowIntersect(const Ray& ra, double& tmin) const{
     return false;

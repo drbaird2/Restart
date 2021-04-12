@@ -20,11 +20,6 @@ class Vec3{
         double z() const;
 
         Vec3 operator-() const;
-        Vec3 operator+(const Vec3 &v);
-        Vec3 operator-(const Vec3 &v);
-        Vec3 operator*(const Vec3 &v);
-        Vec3 operator*(double t);
-        Vec3 operator/(double t);
         
         Vec3& operator+=(const Vec3 &v);
         Vec3& operator*=(const double t);
@@ -48,23 +43,35 @@ inline Vec3 Vec3::operator-() const{
     return Vec3(-xPoint,-yPoint, -zPoint);
 }
 
-inline Vec3 Vec3::operator+(const Vec3 &v){
-    return Vec3(xPoint + v.xPoint, yPoint + v.yPoint, zPoint+v.zPoint);
-}
-inline Vec3 Vec3::operator-(const Vec3 &v){
-    return Vec3(xPoint - v.xPoint, yPoint - v.yPoint, zPoint - v.zPoint);
+inline Vec3 operator+(const Vec3 &u, const Vec3 &v){
+    return Vec3(u.xPoint + v.xPoint, u.yPoint + v.yPoint, u.zPoint+v.zPoint);
 }
 
-inline Vec3 Vec3::operator*(const Vec3 &v){
-    return Vec3(xPoint * v.xPoint, yPoint * v.yPoint, zPoint * v.zPoint);
+inline Vec3 operator+(const Vec3 &u, double t){
+    return Vec3(u.xPoint + t, u.yPoint + t, u.zPoint+t);
 }
 
-inline Vec3 Vec3::operator*(double t){
-    return Vec3(xPoint * t, yPoint * t, zPoint * t);
+inline Vec3 operator-(const Vec3 &u, const Vec3 &v){
+    return Vec3(u.xPoint - v.xPoint, u.yPoint - v.yPoint, u.zPoint - v.zPoint);
+}
+inline Vec3 operator-(const Vec3 &u, double t){
+    return Vec3(u.xPoint - t, u.yPoint - t, u.zPoint - t);
 }
 
-inline Vec3 Vec3::operator/(double t){
-    return Vec3(xPoint/t, yPoint/t, zPoint/t);
+inline Vec3 operator*(const Vec3 &u, const Vec3 &v){
+    return Vec3(u.xPoint * v.xPoint, u.yPoint * v.yPoint, u.zPoint * v.zPoint);
+}
+
+inline Vec3 operator*(const Vec3 &u, double t){
+    return Vec3(u.xPoint * t, u.yPoint * t, u.zPoint * t);
+}
+
+inline Vec3 operator*(double t, const Vec3 &u){
+    return u * t;
+}
+
+inline Vec3 operator/(Vec3 u, double t){
+    return (1/t) * u;
 }
         
 inline Vec3& Vec3::operator+=(const Vec3 &v){

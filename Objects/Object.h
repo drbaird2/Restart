@@ -4,6 +4,9 @@
 #include "../Utilities/Color.h"
 #include "../Materials/Material.h"
 #include "../Utilities/Record.h"
+#include <memory>
+
+using namespace std;
 
 class Material;
 class Record;
@@ -21,7 +24,7 @@ class Object{
 
         shared_ptr<Object> clone() const;
         
-        virtual bool intersect(const Ray& ra, double& t, Record& recentHits) = 0;
+        virtual bool intersect(const Ray& ra, double& t, Record& recentHits);
         virtual bool shadowIntersect(const Ray& ra, double& tmin) const;
         
         Color getColor();
@@ -56,8 +59,8 @@ inline Object& Object::operator=(const Object& rhs){
 		mat = nullptr;
 	}
 
-	if (rhs.mat)
-		mat = rhs.mat->clone();
+//	if (rhs.mat)
+//		mat = rhs.mat->clone();
 
 	//shadows = rhs.shadows;
 

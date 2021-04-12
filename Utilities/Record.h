@@ -3,10 +3,14 @@
 
 #include "Ray.h"
 #include "Color.h"
-#include "Scene.h"
-#include "../Materials/Material.h"
+//#include "Scene.h"
+//#include "../Materials/Material.h"
+#include <memory>
+
+using namespace std;
 
 class Scene;
+class Material;
 
 class Record{
     public:
