@@ -1,7 +1,7 @@
 #include "Pinhole.h"
 #include "..//Utilities//Color.h"
 #include "..//Utilities//Ray.h"
-#include "..//Utilities//ViewPlane.h"
+#include "..//Utilities//Viewplane.h"
 
 
 Pinhole::Pinhole()
@@ -57,15 +57,18 @@ void Pinhole::renderScene( Scene& scenePtr)
 	vp.ps /= zoom;
 	ra.orig = eye;
 
+	cout << "P3\n" << vp.vres << " " << vp.hres << "\n255\n";
+
 	for (int r = 0; r < vp.vres; r++)
 	{
+		cerr << "\rRendering: Row " << r << ' ' << std::flush;
 		for (int c = 0; c < vp.hres; c++)
 		{
 			L = black;
 
 			for (int j = 0; j < vp.numSamples; j++)
 			{
-				//sp = vp.mSamplerPtr->SampleUnitSquare();
+				sp = vp.samplerPtr->sampleUnitSquare();
 				pp.xPoint = vp.ps * (c - 0.5 * vp.hres + sp.xPoint);
 				pp.yPoint = vp.ps * (r - 0.5 * vp.vres + sp.yPoint);
 				ra.dir = getDirection(pp);

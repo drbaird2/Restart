@@ -1,5 +1,6 @@
 #include "Viewplane.h"
 
+
 Viewplane::Viewplane():
     hres(400), 
 	vres(400),

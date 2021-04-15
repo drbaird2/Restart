@@ -17,6 +17,9 @@
 #include "../Cameras/Pinhole.h"
 #include "../Cameras/Orthographic.h"
 
+//Samplers
+#include "../Samplers/Multijittered.h"
+
 Scene::Scene(): 
     backgroundColor(black),
 	tracerPtr(nullptr),
@@ -35,6 +38,8 @@ void Scene::build()
 	vp.setHres(500);
 	vp.setVres(500);
     vp.setPixelSize(1.0);
+	int numSamples = 10;
+	vp.setSampler(move(make_shared<MultiJittered>(numSamples)));
 
 	backgroundColor = black;
 
@@ -49,7 +54,7 @@ void Scene::build()
 	setCamera(pinholePtr); */
 
     shared_ptr<Orthographic> orthoPtr = make_shared<Orthographic>();
-	orthoPtr->setZWindow(1000);
+	orthoPtr->setZWindow(500);
 	setCamera(orthoPtr);
 
 
@@ -68,7 +73,7 @@ void Scene::build()
 
 	sphere.reset();
 	sphere = make_shared<Sphere>();
-	sphere->setCenter(100, 0, -100);
+	sphere->setCenter(0, 0, -100);
 	sphere->setRadius(50);
 	sphere->setColor(Color(0, 1, 1));
 	addObject(sphere);
@@ -78,9 +83,9 @@ void Scene::build()
 	sphere->setColor(Color(1, 1, 0));
 	addObject(sphere); */
 
-	shared_ptr<Plane> plane = make_shared<Plane>(Point3(100, 0, 0), Normal(-5, 25, -2));
+	/* shared_ptr<Plane> plane = make_shared<Plane>(Point3(100, 0, 0), Normal(-5, 25, -2));
 	plane->setColor(Color(0.3, 0.3, 0.3));
-	addObject(plane); 
+	addObject(plane); */ 
 }
 
 void Scene::renderScene()
@@ -144,9 +149,9 @@ void Scene::DisplayPixel(const int row, const int column, const Color& rawColor)
 
     pixels.push_back(mappedColor);
 
-	/* cout << static_cast<int>(255.999 * mappedColor.red) << ' '
+	cout << static_cast<int>(255.999 * mappedColor.red) << ' '
     << static_cast<int>(255.999 * mappedColor.green) << ' '
-    << static_cast<int>(255.999 * mappedColor.blue) << '\n'; */
+    << static_cast<int>(255.999 * mappedColor.blue) << '\n';
 
 }
 
@@ -165,16 +170,16 @@ void Scene::save_bmp(const std::string& outputFile) const{
             
     unsigned char bmpinfoheader[40] = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0,24,0};
     //width of the image in bytes
-    bmpinfoheader[ 4] = (unsigned char)(vp.vres);
-    bmpinfoheader[ 5] = (unsigned char)(vp.vres>>8);
-    bmpinfoheader[ 6] = (unsigned char)(vp.vres>>16);
-    bmpinfoheader[ 7] = (unsigned char)(vp.vres>>24);
+    bmpinfoheader[ 4] = (unsigned char)(vp.hres);
+    bmpinfoheader[ 5] = (unsigned char)(vp.hres>>8);
+    bmpinfoheader[ 6] = (unsigned char)(vp.hres>>16);
+    bmpinfoheader[ 7] = (unsigned char)(vp.hres>>24);
     
     //height of the image in bytes
-    bmpinfoheader[ 8] = (unsigned char)(vp.hres);
-    bmpinfoheader[ 9] = (unsigned char)(vp.hres>>8);
-    bmpinfoheader[10] = (unsigned char)(vp.hres>>16);
-    bmpinfoheader[11] = (unsigned char)(vp.hres>>24);
+    bmpinfoheader[ 8] = (unsigned char)(vp.vres);
+    bmpinfoheader[ 9] = (unsigned char)(vp.vres>>8);
+    bmpinfoheader[10] = (unsigned char)(vp.vres>>16);
+    bmpinfoheader[11] = (unsigned char)(vp.vres>>24);
 
     // Size image in bytes
     bmpinfoheader[21] = (unsigned char)(image_size);
