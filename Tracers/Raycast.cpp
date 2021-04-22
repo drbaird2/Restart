@@ -28,11 +28,26 @@ Color Raycast::traceRay(const Ray& ra) const
 
 	if (recentHits.colided)
 	{
-		return (recentHits.col);
+		return (recentHits.col );
 	}
 	else
 	{
 		return (scenePtr->backgroundColor);
 	}
 	
+}
+
+Color Raycast::traceRay(const Ray& ra, const int depth) const
+{
+	Record recentHits(scenePtr->intersect(ra));
+
+	if (recentHits.colided)
+	{
+		recentHits.sceneRay = ra;
+		return recentHits.material_ptr->shade(recentHits);
+	}
+	else
+	{
+		return scenePtr->backgroundColor;
+	}
 }

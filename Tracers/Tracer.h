@@ -16,6 +16,8 @@ class Tracer{
         virtual ~Tracer();
 
         virtual Color traceRay(const Ray& ra) const;
+        virtual Color traceRay(const Ray& ra, const int depth) const;
+        virtual Color traceRay(const Ray& ra, double& tMin, const int depth) const;
 
 };
 

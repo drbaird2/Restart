@@ -40,6 +40,11 @@ BRDF::~BRDF(){
 	}
 }
 
+shared_ptr<BRDF> BRDF::clone()
+{
+	return std::make_shared<BRDF>(*this);
+}
+
 void BRDF::setSampler(shared_ptr<Sampler> sPtr){
 	samplerPtr = sPtr;
 	samplerPtr->mapSamplesToHemisphere(1); //for perfect diffuse

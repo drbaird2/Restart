@@ -60,3 +60,19 @@ bool Plane::intersect(const Ray& ra, double& tMin, Record& recentHits){
 		return (false);
 	}
 }
+
+bool Plane::shadowIntersect(const Ray& ra, double& tMin) const
+{
+	Vec3 temp = ra.dir;
+	double t = (aPoint - ra.orig).dot(theNormal) / temp.dot(theNormal);
+
+	if (t > kEpsilon)
+	{
+		tMin = t;
+		return (true);
+	}
+	else
+	{
+		return false;
+	}
+}

@@ -1,5 +1,6 @@
 #include "Lambertian.h"
 #include "../Utilities/Constants.h"
+#include "../Samplers/Multijittered.h"
 
 Lambertian::Lambertian():
 	BRDF(),
@@ -31,8 +32,8 @@ Lambertian& Lambertian::operator=(const Lambertian& rhs)
 Lambertian::~Lambertian()
 {}
 
-shared_ptr<BRDF> Lambertian::clone() const{
-	return move(make_shared<Lambertian>(*this));
+shared_ptr<Lambertian> Lambertian::clone(){
+	return make_shared<Lambertian>(*this);
 }
 
 Color Lambertian::func(const Record& recentHits, const Vec3& wo, const Vec3& wi) const{
@@ -69,4 +70,16 @@ void Lambertian::setCd(const double c){
 	cd.red = c;
 	cd.green = c;
 	cd.blue = c;
+}
+
+void Lambertian::setSampler(shared_ptr<Sampler> sp)
+{
+	samplerPtr = sp;
+	samplerPtr->mapSamplesToHemisphere(1);
+}
+
+void Lambertian::setSamples(const int numSamples)
+{
+	samplerPtr = make_shared<MultiJittered>(numSamples);
+	samplerPtr->mapSamplesToHemisphere(1);
 }

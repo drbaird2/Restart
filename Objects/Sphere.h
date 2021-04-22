@@ -28,7 +28,8 @@ class Sphere : public Object {
 
         //The intersect function using the quadratic equation.
         virtual bool intersect(const Ray& ra, double& t, Record& recentHits) override;  
-        //virtual bool bounding_box(AABB& bounder) const override;
+        virtual bool shadowIntersect(const Ray& ra, double& tmin) const override;
+        AABB getBoundingBox() const override;
     
         
 };

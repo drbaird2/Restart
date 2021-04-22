@@ -42,7 +42,9 @@ Vec3 Vec3::cross(const Vec3 &v){
                 xPoint * v.yPoint - yPoint * v.xPoint);
 }
 
-Vec3 Vec3::unit_vector(){
-    return *this / this->length();
+void Vec3::unit_vector(){
+    xPoint = xPoint / this->length();
+    yPoint = yPoint / this->length();
+    zPoint = zPoint / this->length();
 }
 

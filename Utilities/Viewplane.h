@@ -7,10 +7,11 @@
 
 class Viewplane{
     public:
-        int         hres;
-        int         vres;
-        float       ps;
-        int         numSamples;
+        int         		hres;
+        int         		vres;
+        double      		pixelSize;
+        int         		numSamples;
+		int					maxDepth;
         shared_ptr<Sampler> samplerPtr;
 
     Viewplane();
@@ -23,7 +24,8 @@ class Viewplane{
     void setVres(const int vres);
     void setPixelSize(const float size);
     void setSamples(const int n);   
-    void setSampler(shared_ptr<Sampler> sp);     
+    void setSampler(shared_ptr<Sampler> sp); 
+	void setMaxDepth(const int depth);    
 
 };
 
@@ -33,7 +35,7 @@ inline Viewplane& Viewplane::operator=(const Viewplane& rhs){
 		
 	hres 				= rhs.hres;
 	vres 				= rhs.vres;
-	ps					= rhs.ps;
+	pixelSize			= rhs.pixelSize;
 	
 	return (*this);
 }
@@ -48,7 +50,7 @@ inline void Viewplane::setVres(const int v_res) {
 }
 
 inline void Viewplane::setPixelSize(const float size) {
-	ps = size;
+	pixelSize = size;
 }
 
 inline void Viewplane::setSamples(const int n) {
@@ -72,4 +74,10 @@ inline void Viewplane::setSampler(shared_ptr<Sampler> sp){
 	numSamples = sp->getNumSamples();
 	samplerPtr = sp;
 }
+
+inline void Viewplane::setMaxDepth(const int depth)
+{
+	maxDepth = depth;
+}
+
 #endif

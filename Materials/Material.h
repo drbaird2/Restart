@@ -19,7 +19,11 @@ class Material {
 
 		shared_ptr<Material> clone() const;
 				
-		virtual Color shade(Record& recentHits);	
+		virtual Color shade(Record& recentHits);
+		virtual Color areaLightShade(Record& recentHits);
+		virtual Color pathShade(Record& recentHits);
+		virtual Color globalShade(Record& recentHits);
+		virtual Color getLe(Record& recentHits) const;	
 	
 		Material& operator= (const Material& rhs);						
 };

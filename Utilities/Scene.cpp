@@ -9,6 +9,7 @@
 //Objects
 #include "../Objects/Sphere.h"
 #include "../Objects/Plane.h"
+#include "../Objects/Triangle.h"
 
 //Tracers
 #include "../Tracers/Raycast.h"
@@ -20,13 +21,24 @@
 //Samplers
 #include "../Samplers/Multijittered.h"
 
+//Lights
+#include "../Lights/Ambient.h"
+#include "../Lights/Pointlight.h"
+#include "../Lights/Directional.h"
+
+//Materials
+#include "../Materials/Matte.h"
+
+//BRDFs
+#include "../BRDFs/Lambertian.h"
+
 Scene::Scene(): 
     backgroundColor(black),
 	tracerPtr(nullptr),
-	vp()
-{
-
-}
+	vp(),
+	ambientPtr(nullptr),
+	count(0)
+{}
 
 Scene::~Scene()
 {
@@ -35,57 +47,132 @@ Scene::~Scene()
 
 void Scene::build()
 {
-	vp.setHres(500);
-	vp.setVres(500);
+	vp.setHres(600);
+	vp.setVres(300);
     vp.setPixelSize(1.0);
-	int numSamples = 10;
+	int numSamples = 16;
+	vp.setSamples(numSamples);
 	vp.setSampler(move(make_shared<MultiJittered>(numSamples)));
-
+	vp.setMaxDepth(10);
 	backgroundColor = black;
 
 	tracerPtr = make_shared<Raycast>(this);
 
-    /* shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
-	pinholePtr->setEye(-100, 100, 100);
-	pinholePtr->setLookAt(0, 100, -100);
-	pinholePtr->setViewDistance(400);
-	pinholePtr->setZoom(1.0);
+	/* shared_ptr<Ambient> ambientPtr = make_shared<Ambient>();
+	ambientPtr->setScaleRadiance(1.0);
+	setAmbientLight(ambientPtr); */
+
+	shared_ptr<Directional> flashlight = make_shared<Directional>();
+	flashlight->setDirection(200, 250, 300);  
+	flashlight->setColor(white);  			// for Figure 14.24(a)
+	flashlight->setScaleRadiance(3.0);			
+	//flashlight->set_shadows(true);    // see Chapter 16
+	addLight(flashlight);
+
+    shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
+	pinholePtr->setEye(0, 25, 100);
+	pinholePtr->setLookAt(0, 0, 0);
+	pinholePtr->setViewDistance(6500);
+	//pinholePtr->setZoom(1.0);
 	pinholePtr->ComputeUVW();
-	setCamera(pinholePtr); */
+	setCamera(pinholePtr);
 
-    shared_ptr<Orthographic> orthoPtr = make_shared<Orthographic>();
-	orthoPtr->setZWindow(500);
-	setCamera(orthoPtr);
+    /* shared_ptr<Orthographic> orthoPtr = make_shared<Orthographic>();
+	orthoPtr->setZWindow(100);
+	setCamera(orthoPtr); */
 
+	/* shared_ptr<PointLight> god = make_shared<PointLight>();
+	god->setLocation(100,50,150);
+	god->setScaleRadiance(3.0);
+	addLight(god); */
+
+	shared_ptr<PointLight> jesus = make_shared<PointLight>();
+	jesus->setLocation(0,300,500);
+	jesus->setScaleRadiance(3.0);
+	addLight(jesus);
+
+	shared_ptr<Matte> matteYellow = make_shared<Matte>();
+	matteYellow->setKa(0.0);
+	matteYellow->setKd(0.75);
+	matteYellow->setCd(1,1,0);
+	
+
+	shared_ptr<Matte> matteOrange = make_shared<Matte>();
+	matteOrange->setKa(0);
+	matteOrange->setKd(0.75);
+	matteOrange->setCd(1,0.5,0);
+
+	shared_ptr<Matte> matteGreen = make_shared<Matte>();
+	matteGreen->setKa(0);
+	matteGreen->setKd(0.75);
+	matteGreen->setCd(0,1,0);
+
+	shared_ptr<Matte> matteRed = make_shared<Matte>();
+	matteRed->setKa(0);
+	matteRed->setKd(0.75);
+	matteRed->setCd(solidred);
+
+	double radius = 1.0;
+	double gap = 0.2;
 
 	shared_ptr<Sphere> sphere = make_shared<Sphere>();
-	sphere->setCenter(100, 100, 0);
-	sphere->setRadius(50);
-	sphere->setColor(Color(1, 1, 0));
+	sphere->setCenter(-3.0 * radius - 1.5 * gap, 0.0, 0.0);
+	sphere->setRadius(radius);
+	sphere->setMaterial(matteRed);
+	addObject(sphere);
+
+	shared_ptr<Sphere> sphere2 = make_shared<Sphere>();
+	sphere2->setCenter(-radius - 0.5 * gap, 0.0, 0.0);
+	sphere2->setRadius(radius);
+	sphere2->setMaterial(matteOrange);
+	addObject(sphere2);
+
+	shared_ptr<Sphere> sphere3 = make_shared<Sphere>();
+	sphere3->setCenter(radius + 0.5 * gap, 0.0, 0.0);
+	sphere3->setRadius(radius);
+	sphere3->setMaterial(matteYellow);
+	addObject(sphere3);
+
+	shared_ptr<Sphere> sphere4 = make_shared<Sphere>();
+	sphere4->setCenter(3.0 * radius + 1.5 * gap, 0.0, 0.0);
+	sphere4->setRadius(radius);
+	sphere4->setMaterial(matteGreen);
+	addObject(sphere4);
+
+	shared_ptr<Plane> plane = make_shared<Plane>();
+	plane->aPoint = Point3(0,-1,0);
+	plane->theNormal = Normal(0,1,0);
+	plane->setMaterial(matteGreen);
+	addObject(plane);
+
+	/* shared_ptr<Sphere> sphere = make_shared<Sphere>();
+	sphere->setCenter(0, 115, -1);
+	sphere->setRadius(30);
+	sphere->setMaterial(matteYellow);
 	addObject(sphere);
 
 	sphere.reset();
 	sphere = make_shared<Sphere>();
-	sphere->setCenter(100, 100, -100);
+	sphere->setCenter(0, 70, -1);
+	sphere->setRadius(50);
+	sphere->setMaterial(matteBlue);
+	addObject(sphere);
+
+	sphere.reset();
+	sphere = make_shared<Sphere>();
+	sphere->setCenter(0, 0, -1);
 	sphere->setRadius(70);
-	sphere->setColor(Color(0, 1, 0));
-	addObject(sphere);
-
-	sphere.reset();
-	sphere = make_shared<Sphere>();
-	sphere->setCenter(0, 0, -100);
-	sphere->setRadius(50);
-	sphere->setColor(Color(0, 1, 1));
-	addObject(sphere);
-
-	/* sphere.reset();
-	sphere = make_shared<Sphere>(Point3(0, 30, 0), 60);
-	sphere->setColor(Color(1, 1, 0));
+	sphere->setMaterial(matteGreen);
 	addObject(sphere); */
 
-	/* shared_ptr<Plane> plane = make_shared<Plane>(Point3(100, 0, 0), Normal(-5, 25, -2));
-	plane->setColor(Color(0.3, 0.3, 0.3));
-	addObject(plane); */ 
+
+	/* shared_ptr<Plane> plane = make_shared<Plane>();
+	plane->aPoint = Point3(0,-100,-1);
+	plane->theNormal = Normal(0,-250,-1);
+	plane->setMaterial(matteOrange);
+	addObject(plane); */
+
+	
 }
 
 void Scene::renderScene()
@@ -101,10 +188,10 @@ void Scene::renderScene()
 	for (int r = 0; r < vp.vres; r++) //up
 	{
         cerr << "\rRendering: Row " << r << ' ' << std::flush;
-		for (int c = 0; c <= vp.hres; c++) //across
+		for (int c = 0; c < vp.hres; c++) //across
 		{
-			x = vp.ps * (c - 0.5 * (vp.hres - 1.0));
-			y = vp.ps * (r - 0.5 * (vp.vres - 1.0));
+			x = vp.pixelSize * (c - 0.5 * (vp.hres - 1.0));
+			y = vp.pixelSize * (r - 0.5 * (vp.vres - 1.0));
 			ra.orig = Point3(x, y, zw);
 			pixelColor = tracerPtr->traceRay(ra);
 			DisplayPixel(r, c, pixelColor);
@@ -116,6 +203,8 @@ Record Scene::intersect(const Ray& ra)
 {
 	Record recentHits(*this);
 	double t;
+	Normal norm;
+	Point3 localHit;
 	double tMin = kHugeValue;
 	int numObjects = objects.size();
 
@@ -125,8 +214,17 @@ Record Scene::intersect(const Ray& ra)
 		{
 			recentHits.colided = true;
 			tMin = t;
-			recentHits.col = objects[i]->getColor();
+			recentHits.material_ptr = objects[i]->getMaterial();
+			recentHits.sceneHit = ra.orig + t * ra.dir;
+			norm = recentHits.sceneNormal;
+			localHit = recentHits.localHit;
 		}
+	}
+
+	if(recentHits.colided){
+		recentHits.t = tMin;
+		recentHits.sceneNormal = norm;
+		recentHits.localHit = localHit;
 	}
 
 	return (recentHits);
@@ -224,4 +322,15 @@ void Scene::setCamera(shared_ptr<Camera> camera)
 	}
 
 	cameraPtr = camera;
+}
+
+void Scene::setAmbientLight(shared_ptr<Light> light)
+{
+	if (ambientPtr)
+	{
+		ambientPtr.reset();
+		ambientPtr = nullptr;
+	}
+
+	ambientPtr = light;
 }

@@ -11,6 +11,7 @@ public:
 
 	virtual ~Raycast();
 	Color traceRay(const Ray& ra) const override;
+	Color traceRay(const Ray& ra ,const int depth) const override;
 };
 
 #endif

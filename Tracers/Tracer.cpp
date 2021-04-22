@@ -23,3 +23,13 @@ Color Tracer::traceRay(const Ray& ra) const {
 	return (black);
 }
 
+Color Tracer::traceRay(const Ray& ray, const int depth) const
+{
+	return black;
+}
+
+Color Tracer::traceRay(const Ray& ray, double& tMin, const int depth) const
+{
+	return black;
+}
+

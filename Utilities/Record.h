@@ -21,6 +21,7 @@ class Record{
         Normal                  sceneNormal;
         Color                   col;
         Ray                     sceneRay;
+        int                     depth;
         Vec3                    lightDir;
         Scene&                  sceneRef;
         double                  t;

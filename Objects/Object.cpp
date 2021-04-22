@@ -47,3 +47,8 @@ float Object::pdf(Record& recentHits){
 Normal Object::getNormal(const Point3& p){
     return Normal();
 }
+
+AABB Object::getBoundingBox() const
+{
+	return AABB();
+}

@@ -6,7 +6,7 @@
 
 Pinhole::Pinhole()
 	: Camera()
-	, dist(500)
+	, dist(1)
 	, zoom(1.0)
 {
 
@@ -54,7 +54,7 @@ void Pinhole::renderScene( Scene& scenePtr)
 	Point2 sp;
 	Point2 pp;
 
-	vp.ps /= zoom;
+	vp.pixelSize /= zoom;
 	ra.orig = eye;
 
 	cout << "P3\n" << vp.vres << " " << vp.hres << "\n255\n";
@@ -69,15 +69,16 @@ void Pinhole::renderScene( Scene& scenePtr)
 			for (int j = 0; j < vp.numSamples; j++)
 			{
 				sp = vp.samplerPtr->sampleUnitSquare();
-				pp.xPoint = vp.ps * (c - 0.5 * vp.hres + sp.xPoint);
-				pp.yPoint = vp.ps * (r - 0.5 * vp.vres + sp.yPoint);
+				pp.xPoint = vp.pixelSize * (c - 0.5 * vp.hres + sp.xPoint);
+				pp.yPoint = vp.pixelSize * (r - 0.5 * vp.vres + sp.yPoint);
+
 				ra.dir = getDirection(pp);
 				// TraceRay output black pixel now
 				// so if you run any programs, image is all black.
 				// if you use TraceRay(ray);, you can output ideal images. 
-				L += scenePtr.tracerPtr->traceRay(ra);
+				L += scenePtr.tracerPtr->traceRay(ra, depth);
 			}
-			//L /= vp.numSamples;
+			L /= vp.numSamples;
 			
 			scenePtr.DisplayPixel(r, c, L);
 		}
@@ -89,6 +90,7 @@ void Pinhole::renderScene( Scene& scenePtr)
 Vec3 Pinhole::getDirection(const Point2& p) const
 {
 	Vec3 dir = p.xPoint * U + p.yPoint * V - dist * W;
+	//Vec3 dir = p.xPoint * Vec3(1,0,0) + p.yPoint* Vec3(0,1,0) - dist * Vec3(0,0,1);
 	dir.unit_vector();
 	return dir;
 }

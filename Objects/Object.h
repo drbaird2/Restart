@@ -4,6 +4,7 @@
 #include "../Utilities/Color.h"
 #include "../Materials/Material.h"
 #include "../Utilities/Record.h"
+#include "AABB.h"
 #include <memory>
 
 using namespace std;
@@ -42,6 +43,8 @@ class Object{
         virtual float pdf(Record& recentHits);
 
         virtual Normal getNormal(const Point3& p);
+
+        virtual AABB getBoundingBox() const;
 
         Object& operator=(const Object& rhs);
 

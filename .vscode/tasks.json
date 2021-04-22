@@ -8,13 +8,14 @@
 			"args": [
 				"-g",
 				"${workspaceFolder}\\*.cpp", 
-				"${workspaceFolder}\\Utilities\\*.cpp",
+				"${workspaceFolder}\\BRDFs\\*.cpp",
+				"${workspaceFolder}\\Cameras\\*.cpp",
+				"${workspaceFolder}\\Lights\\*.cpp",
 				"${workspaceFolder}\\Materials\\*.cpp",
 				"${workspaceFolder}\\Objects\\*.cpp",
-				"${workspaceFolder}\\Tracers\\*.cpp",
-				"${workspaceFolder}\\Cameras\\*.cpp",
-				"${workspaceFolder}\\BRDFs\\*.cpp",
 				"${workspaceFolder}\\Samplers\\*.cpp",
+				"${workspaceFolder}\\Tracers\\*.cpp",
+				"${workspaceFolder}\\Utilities\\*.cpp",
 				"-o",
 				"${workspaceFolder}\\main.exe"
 			],

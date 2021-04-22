@@ -13,7 +13,7 @@ class BRDF{
     
 	    BRDF();
 	    BRDF(const BRDF& brdf);
-	    virtual shared_ptr<BRDF> clone() const = 0;
+	    shared_ptr<BRDF> clone();
 	    BRDF& operator=(const BRDF& rhs);
 	    virtual ~BRDF();
 

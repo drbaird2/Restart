@@ -63,17 +63,17 @@ void Orthographic::renderScene(Scene& scenePtr)
 	for (int r = 0; r < vp.vres; r++) //up
 	{
 		cerr << "\rRendering: Row " << r << ' ' << std::flush;
-		for (int c = 0; c <= vp.hres; c++) //across
+		for (int c = 0; c < vp.hres; c++) //across
 		{
 			pixelColor = black;
 
 			for (int j = 0; j < vp.numSamples; j++)
 			{
-				//sp = vp.samplerPtr->sampleUnitSquare();
-				pp.xPoint = vp.ps * (c - 0.5 * vp.hres + sp.xPoint);
-				pp.yPoint = vp.ps * (r - 0.5 * vp.vres + sp.yPoint);
+				sp = vp.samplerPtr->sampleUnitSquare();
+				pp.xPoint = vp.pixelSize * (c - 0.5 * vp.hres + sp.xPoint);
+				pp.yPoint = vp.pixelSize * (r - 0.5 * vp.vres + sp.yPoint);
 				ra.orig = Point3(pp.xPoint, pp.yPoint, zWindow);
-				pixelColor += scenePtr.tracerPtr->traceRay(ra);
+				pixelColor += scenePtr.tracerPtr->traceRay(ra, 0);
 			}
 
 			pixelColor /= vp.numSamples;

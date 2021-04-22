@@ -33,7 +33,7 @@ class Vec3{
 
         double dot(const Vec3 &v);
         Vec3 cross(const Vec3 &v);
-        Vec3 unit_vector();
+        void unit_vector();
 };
 
 using Point3 = Vec3;

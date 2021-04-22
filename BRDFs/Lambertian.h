@@ -13,7 +13,8 @@ class Lambertian : public BRDF{
 	    Lambertian& operator=(const Lambertian& rhs);
 	    ~Lambertian();
 
-	    shared_ptr<BRDF> clone() const override;
+	    shared_ptr<Lambertian> clone();
+
 	    Color func(const Record& recentHits, const Vec3& wo, const Vec3& wi) const override;
 	    virtual Color sampleFunc(const Record& recentHits, const Vec3& wo, Vec3& wi, float& pdf) const override;
 	    virtual Color rho(const Record& recentHits, const Vec3& wo) const override;
@@ -23,7 +24,9 @@ class Lambertian : public BRDF{
 	    void setCd(const Color& c);
 	    void setCd(const double r, const double g, const double b);
 	    void setCd(const double c);
-private:
+
+		void setSampler(shared_ptr<Sampler> sp);
+		void setSamples(const int numSamples);
 	
 };
 
