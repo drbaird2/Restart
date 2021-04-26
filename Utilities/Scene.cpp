@@ -48,7 +48,7 @@ Scene::~Scene()
 void Scene::build()
 {
 	vp.setHres(600);
-	vp.setVres(300);
+	vp.setVres(400);
     vp.setPixelSize(1.0);
 	int numSamples = 16;
 	vp.setSamples(numSamples);
@@ -58,21 +58,21 @@ void Scene::build()
 
 	tracerPtr = make_shared<Raycast>(this);
 
-	/* shared_ptr<Ambient> ambientPtr = make_shared<Ambient>();
+	shared_ptr<Ambient> ambientPtr = make_shared<Ambient>();
 	ambientPtr->setScaleRadiance(1.0);
-	setAmbientLight(ambientPtr); */
+	setAmbientLight(ambientPtr);
 
 	shared_ptr<Directional> flashlight = make_shared<Directional>();
-	flashlight->setDirection(200, 250, 300);  
-	flashlight->setColor(white);  			// for Figure 14.24(a)
-	flashlight->setScaleRadiance(3.0);			
-	//flashlight->set_shadows(true);    // see Chapter 16
+	flashlight->setDirection(200, 150, 125);  
+//	flashlight->setColor(solidblue);  			// for Figure 14.24(a)
+	flashlight->setScaleRadiance(4.0);			
+	flashlight->setIsShadow(true);    // see Chapter 16
 	addLight(flashlight);
 
     shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
-	pinholePtr->setEye(0, 25, 100);
-	pinholePtr->setLookAt(0, 0, 0);
-	pinholePtr->setViewDistance(6500);
+	pinholePtr->setEye(2, 2.5, 15);
+	pinholePtr->setLookAt(3, 2.5, 0);
+	pinholePtr->setViewDistance(700);
 	//pinholePtr->setZoom(1.0);
 	pinholePtr->ComputeUVW();
 	setCamera(pinholePtr);
@@ -87,41 +87,53 @@ void Scene::build()
 	addLight(god); */
 
 	shared_ptr<PointLight> jesus = make_shared<PointLight>();
-	jesus->setLocation(0,300,500);
-	jesus->setScaleRadiance(3.0);
+	jesus->setLocation(-12,15,30);
+	jesus->setScaleRadiance(4.0);
+	jesus->setIsShadow(true);
 	addLight(jesus);
 
 	shared_ptr<Matte> matteYellow = make_shared<Matte>();
-	matteYellow->setKa(0.0);
-	matteYellow->setKd(0.75);
-	matteYellow->setCd(1,1,0);
+	matteYellow->setKa(0.3);
+	matteYellow->setKd(0.3);
+	matteYellow->setCd(0.5,0.6,0);
 	
 
 	shared_ptr<Matte> matteOrange = make_shared<Matte>();
-	matteOrange->setKa(0);
-	matteOrange->setKd(0.75);
-	matteOrange->setCd(1,0.5,0);
+	matteOrange->setKa(0.35);
+	matteOrange->setKd(0.50);
+	matteOrange->setCd(0,0.5,0.5);
 
 	shared_ptr<Matte> matteGreen = make_shared<Matte>();
-	matteGreen->setKa(0);
-	matteGreen->setKd(0.75);
-	matteGreen->setCd(0,1,0);
+	matteGreen->setKa(0.1);
+	matteGreen->setKd(0.2);
+	matteGreen->setCd(white);
 
-	shared_ptr<Matte> matteRed = make_shared<Matte>();
+	/* shared_ptr<Matte> matteRed = make_shared<Matte>();
 	matteRed->setKa(0);
 	matteRed->setKd(0.75);
-	matteRed->setCd(solidred);
+	matteRed->setCd(solidred); */
 
-	double radius = 1.0;
-	double gap = 0.2;
 
 	shared_ptr<Sphere> sphere = make_shared<Sphere>();
-	sphere->setCenter(-3.0 * radius - 1.5 * gap, 0.0, 0.0);
-	sphere->setRadius(radius);
-	sphere->setMaterial(matteRed);
+	sphere->setCenter(0, 2.4, -5);
+	sphere->setRadius(1.5);
+	sphere->setMaterial(matteYellow);
 	addObject(sphere);
 
-	shared_ptr<Sphere> sphere2 = make_shared<Sphere>();
+	shared_ptr<Triangle> tri = make_shared<Triangle>();
+	tri->v0 = Point3(1.5,-0.5,1.8);
+	tri->v2 = Point3(7.5,-0.5,-9.00);
+	tri->v0 = Point3(2.35,5.8,1.4);
+	tri->setMaterial(matteOrange);
+	addObject(tri);
+
+	shared_ptr<Plane> plane = make_shared<Plane>();
+	plane->aPoint = Point3(0,-0.5,0);
+	plane->theNormal = Normal(0,1,0);
+	plane->setMaterial(matteGreen);
+	addObject(plane);
+
+	/* shared_ptr<Sphere> sphere2 = make_shared<Sphere>();
 	sphere2->setCenter(-radius - 0.5 * gap, 0.0, 0.0);
 	sphere2->setRadius(radius);
 	sphere2->setMaterial(matteOrange);
@@ -143,7 +155,7 @@ void Scene::build()
 	plane->aPoint = Point3(0,-1,0);
 	plane->theNormal = Normal(0,1,0);
 	plane->setMaterial(matteGreen);
-	addObject(plane);
+	addObject(plane); */
 
 	/* shared_ptr<Sphere> sphere = make_shared<Sphere>();
 	sphere->setCenter(0, 115, -1);

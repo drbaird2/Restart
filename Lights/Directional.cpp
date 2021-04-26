@@ -19,9 +19,7 @@ Directional::Directional(const Directional& dl)
 }
 
 Directional::~Directional()
-{
-
-}
+{}
 
 Directional& Directional::operator=(const Directional& rhs)
 {
