@@ -40,7 +40,7 @@ AABB::~AABB()
 {
 }
 
-bool AABB::intersect(const Ray& ra) const
+bool AABB::intersect(const Ray& ra, double& t, Record& recentHits) const
 {
 	Point3 origin = Point3(ra.orig);
 	Point3 dir = Point3(ra.dir.xPoint, ra.dir.yPoint, ra.dir.zPoint);
@@ -122,4 +122,15 @@ bool AABB::inside(const Point3& p) const
 	return (p.xPoint > p0.xPoint&& p.xPoint < p1.xPoint) &&
 		(p.yPoint > p0.yPoint&& p.yPoint < p1.yPoint) &&
 		(p.zPoint > p1.zPoint&& p.zPoint < p1.zPoint);
+}
+
+AABB AABB::surroundingBox(AABB box0, AABB box1){
+	Point3 small(fmin(box0.p0.xPoint, box1.p0.xPoint),
+                 fmin(box0.p0.yPoint, box1.p0.yPoint),
+                 fmin(box0.p0.zPoint, box1.p0.zPoint));
+	Point3 big(fmax(box0.p1.xPoint, box1.p1.xPoint),
+               fmax(box0.p1.yPoint, box1.p1.yPoint),
+               fmax(box0.p1.zPoint, box1.p1.zPoint));
+	
+	return AABB(small,big);
 }
