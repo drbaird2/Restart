@@ -54,7 +54,7 @@ class Scene{
         void save_bmp(const string& outputFile) const;
         void setCamera(shared_ptr<Camera> camera);
 		void setAmbientLight(shared_ptr<Light> light);
-		AABB getBoundingBox();
+		bool getBoundingBox(AABB& outputBox) const;
 };
 
 inline void Scene::addObject(shared_ptr<Object> object_ptr) {  

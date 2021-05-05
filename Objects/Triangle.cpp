@@ -104,6 +104,7 @@ bool Triangle::intersect(const Ray& ra, double& tMin, Record& recentHits)
 	tMin = t;
 	recentHits.sceneNormal = norm;
 	recentHits.localHit = ra.orig + t * ra.dir;
+    recentHits.material_ptr = getMaterial();
 
 	return true;
 }
@@ -171,7 +172,7 @@ bool Triangle::intersect(const Ray& ra, double& tMin, Record& recentHits)
 	return true;
 }
 
-AABB Triangle::getBoundingBox() const
+bool Triangle::getBoundingBox(AABB& outputBox) const
 {
 	double delta = 0.00001;
 	Point3 ansMin, ansMax;
@@ -187,6 +188,6 @@ AABB Triangle::getBoundingBox() const
 	//minus or plus delta ,It means make BBox
 	ansMin = ansMin - delta;
 	ansMax = ansMax + delta;
-
-	return AABB(ansMin, ansMax);
+    outputBox = AABB(ansMin, ansMax);
+	return true;
 } 

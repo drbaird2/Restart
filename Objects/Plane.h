@@ -21,6 +21,7 @@ class Plane : public Object{
 	    virtual shared_ptr<Plane> clone() const;
 	    virtual bool intersect(const Ray& ra, double& tMin,Record& recentHits);
 		bool shadowIntersect(const Ray& ray, double& tmin) const override;
+		virtual bool getBoundingBox(AABB& outputBox) const;
 };
 
 #endif

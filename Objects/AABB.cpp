@@ -5,17 +5,20 @@ AABB::AABB()
 	: p0(Point3(0.0,0.0,0.0))
 	, p1(Point3(0.0,0.0,0.0))
 {
+	centroid = (p0 + p1) / 2;
 }
 AABB::AABB(Point3 p0, Point3 p1)
 	: p0(p0)
 	, p1(p1)
 {
+	centroid = (p0 + p1) / 2;	
 }
 
 AABB::AABB(const AABB& aab)
 	: p0(aab.p0)
 	, p1(aab.p1)
 {
+	centroid = (p0 + p1) / 2;
 }
 
 shared_ptr<AABB> AABB::clone() const
@@ -39,6 +42,8 @@ AABB& AABB::operator=(const AABB& rhs)
 AABB::~AABB()
 {
 }
+
+
 
 bool AABB::intersect(const Ray& ra, double& t, Record& recentHits) const
 {
@@ -116,12 +121,31 @@ bool AABB::intersect(const Ray& ra, double& t, Record& recentHits) const
 
 	return (t0 < t1 && t1 > kEpsilon);
 }
-
-bool AABB::inside(const Point3& p) const
+/* bool AABB::inside(const Point3& p) const
 {
 	return (p.xPoint > p0.xPoint&& p.xPoint < p1.xPoint) &&
 		(p.yPoint > p0.yPoint&& p.yPoint < p1.yPoint) &&
 		(p.zPoint > p1.zPoint&& p.zPoint < p1.zPoint);
+} */
+
+double AABB::area() const{
+	auto a = p1.xPoint - p0.xPoint;
+	auto b = p1.yPoint - p0.yPoint;
+	auto c = p1.zPoint - p0.zPoint;
+	return 2*(a*b + b*c + c*a);
+}
+
+int AABB::longest_axis() const{
+	auto a = p1.xPoint - p0.xPoint;
+	auto b = p1.yPoint - p0.yPoint;
+	auto c = p1.zPoint - p0.zPoint;
+	if(a>b && a>c){
+		return 0;
+	} else if(b>c){
+		return 1;
+	}else{
+		return 2;
+	}
 }
 
 AABB AABB::surroundingBox(AABB box0, AABB box1){
@@ -131,6 +155,7 @@ AABB AABB::surroundingBox(AABB box0, AABB box1){
 	Point3 big(fmax(box0.p1.xPoint, box1.p1.xPoint),
                fmax(box0.p1.yPoint, box1.p1.yPoint),
                fmax(box0.p1.zPoint, box1.p1.zPoint));
+	std::cout << "surrounding box: " << &box0 << " and " << &box1 << endl;
 	
 	return AABB(small,big);
 }

@@ -20,10 +20,20 @@ public:
 	~AABB();
 
 	bool intersect(const Ray& ray, double& t, Record& recentHits) const;
-	bool inside(const Point3& p) const;
+
+	int longest_axis() const;
+	double area() const;
+
+//	bool inside(const Point3& p) const;
 	AABB surroundingBox(AABB box0, AABB box1);
+
+	Point3 cen() const;
 	Point3 p0;
 	Point3 p1;
+	Point3 centroid;
 };
 
+inline Point3 AABB::cen() const{
+	return centroid;
+}
 #endif

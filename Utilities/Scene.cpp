@@ -114,10 +114,9 @@ void Scene::build()
 
 	double radi = 5;
 	int ranMat, one, two, three;
-	
-	for(int i = 0; i<200; i++){
-		shared_ptr<Sphere> sphere = make_shared<Sphere>();
-		ranMat = random_int(0,2);
+	for(int i = 0; i<1000; i++){
+		shared_ptr<Sphere> sphere = make_shared<Sphere>();		
+		ranMat = random_int(0,3);
 		if(ranMat == 0){
 			sphere->setMaterial(matteRed);
 		}else if(ranMat == 1){
@@ -150,10 +149,10 @@ void Scene::build()
 	shared_ptr<Sphere> sphere2 = make_shared<Sphere>();
 	sphere2->setMaterial(matteRed);
 	sphere2->setRadius(20);
-	sphere2->setCenter(Point3(45,-14,-60));
+	sphere2->setCenter(Point3(55,-14,-60));
 	addObject(sphere2); */
 
-
+//	sort(objects.begin()+0,objects.begin() + objects.size());
 
 	shared_ptr<BVH> tree = make_shared<BVH>(*this);
 	objects.clear();
@@ -199,7 +198,7 @@ Record Scene::intersect(const Ray& ra)
 		{
 			recentHits.colided = true;
 			tMin = t;
-			recentHits.material_ptr = objects[i]->getMaterial();
+			recentHits.material_ptr = objects[i]->getMaterial();//recentHits.lastObject->getMaterial();
 			recentHits.sceneHit = ra.orig + t * ra.dir;
 			norm = recentHits.sceneNormal;
 			localHit = recentHits.localHit;
@@ -320,24 +319,22 @@ void Scene::setAmbientLight(shared_ptr<Light> light)
 	ambientPtr = light;
 }
 
-AABB Scene::getBoundingBox(){
+bool Scene::getBoundingBox(AABB& outputBox) const{
 	if(objects.empty()){
-		return AABB();
+		return false;
 	}
 
 	AABB tempBox;
-	AABB bigBox;
 	bool firstBox = true;
 
 	for (const auto& object:objects){
-		if(firstBox){
-			bigBox = AABB();
-			firstBox = false;
-		}else{
-			tempBox = object->getBoundingBox();
-			bigBox = bigBox.surroundingBox(bigBox, tempBox);
+		if (!object->getBoundingBox(tempBox)){
+			return false;
 		}
+		
+        outputBox = firstBox ? tempBox :  tempBox.surroundingBox(outputBox, tempBox);
+        firstBox = false;
 	}
 
-	return bigBox;
+	return true;
 }

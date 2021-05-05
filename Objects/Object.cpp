@@ -48,7 +48,7 @@ Normal Object::getNormal(const Point3& p){
     return Normal();
 }
 
-AABB Object::getBoundingBox() const
+bool Object::getBoundingBox(AABB& outputBox) const
 {
-	return AABB();
+	return false;
 }

@@ -44,7 +44,7 @@ class Object{
 
         virtual Normal getNormal(const Point3& p);
 
-        virtual AABB getBoundingBox() const;
+        virtual bool getBoundingBox(AABB& outputBox) const;
 
         Object& operator=(const Object& rhs);
 

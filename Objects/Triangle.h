@@ -22,7 +22,7 @@ class Triangle: public Object {
 
 		Triangle& operator= (const Triangle& rhs);
 		
-		virtual AABB getBoundingBox() const override; 
+		virtual bool getBoundingBox(AABB& outputBox) const override; 
 		
 		virtual bool intersect(const Ray& ra, double& tmin, Record& recentHits) override;		 					 
 		

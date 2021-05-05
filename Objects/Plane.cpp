@@ -52,6 +52,7 @@ bool Plane::intersect(const Ray& ra, double& tMin, Record& recentHits){
 		tMin = t;
 		recentHits.sceneNormal = theNormal;
 		recentHits.localHit = ra.orig + t * ra.dir;
+		recentHits.material_ptr = getMaterial();
 
 		return (true);
 	}
@@ -75,4 +76,8 @@ bool Plane::shadowIntersect(const Ray& ra, double& tMin) const
 	{
 		return false;
 	}
+}
+
+bool Plane::getBoundingBox(AABB& outputBox) const{
+	return false;
 }

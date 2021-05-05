@@ -17,13 +17,14 @@ class BVH : public Object {
     public:
         BVH();
 
-        BVH(const Scene& wonderland);
+        BVH(Scene& wonderland);
 
-        BVH(const vector<shared_ptr<Object>>& objectList, size_t start, size_t end);
+        BVH( vector<shared_ptr<Object>>& objectList, size_t start, size_t end);
 
         virtual bool intersect(const Ray& ra, double& t, Record& recentHits) override;
+//        virtual bool shadowIntersect(const Ray& ra, double& t) const override;
 
-        virtual AABB getBoundingBox() const override;
+        virtual bool getBoundingBox(AABB& output_box) const override;
 
     
 };
@@ -35,8 +36,11 @@ inline int random_int(int min, int max) {
 }
 
 inline bool boxCompare(const shared_ptr<Object> a, const shared_ptr<Object> b, int axis) {
-    AABB boxA = a->getBoundingBox();
-    AABB boxB = b->getBoundingBox();
+    AABB boxA;
+    AABB boxB;
+
+    if (!a->getBoundingBox(boxA) || !b->getBoundingBox(boxB))
+        std::cerr << "No bounding box in bvh_node constructor.\n";
 
     if(axis == 0){
         return boxA.p0.xPoint < boxB.p1.xPoint;

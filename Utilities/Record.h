@@ -11,6 +11,7 @@ using namespace std;
 
 class Scene;
 class Material;
+class Object;
 
 class Record{
     public:
@@ -24,6 +25,7 @@ class Record{
         int                     depth;
         Vec3                    lightDir;
         Scene&                  sceneRef;
+        shared_ptr<Object>      lastObject;
         double                  t;
         double                  u;
         double                  v;
