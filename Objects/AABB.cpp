@@ -155,7 +155,7 @@ AABB AABB::surroundingBox(AABB box0, AABB box1){
 	Point3 big(fmax(box0.p1.xPoint, box1.p1.xPoint),
                fmax(box0.p1.yPoint, box1.p1.yPoint),
                fmax(box0.p1.zPoint, box1.p1.zPoint));
-	std::cout << "surrounding box: " << &box0 << " and " << &box1 << endl;
+//	std::cout << "surrounding box: " << &box0 << " and " << &box1 << endl;
 	
 	return AABB(small,big);
 }

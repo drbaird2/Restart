@@ -5,6 +5,7 @@
 #include "Point2.h"
 #include "Ray.h"
 #include "Scene.h"
+#include <chrono>
 
 //Objects
 #include "../Objects/Sphere.h"
@@ -12,6 +13,7 @@
 #include "../Objects/Triangle.h"
 #include "../Objects/AABB.h"
 #include "../Objects/BVH.h"
+#include "../Objects/Obj.h"
 
 //Tracers
 #include "../Tracers/Raycast.h"
@@ -114,7 +116,7 @@ void Scene::build()
 
 	double radi = 5;
 	int ranMat, one, two, three;
-	for(int i = 0; i<1000; i++){
+	for(int i = 0; i<10000; i++){
 		shared_ptr<Sphere> sphere = make_shared<Sphere>();		
 		ranMat = random_int(0,3);
 		if(ranMat == 0){
@@ -154,12 +156,14 @@ void Scene::build()
 
 //	sort(objects.begin()+0,objects.begin() + objects.size());
 
+//Obj cow("cow.obj");
+//cow.update_vertex_normals();
 	shared_ptr<BVH> tree = make_shared<BVH>(*this);
 	objects.clear();
 	addObject(tree);
 }
 
-void Scene::renderScene()
+/* void Scene::renderScene()
 {
 	Color pixelColor;
 	Ray ra;
@@ -169,6 +173,7 @@ void Scene::renderScene()
 	
 	ra.dir = Vec3(0, 0, -1);
 	//cout << "P3\n" << vp.vres << " " << vp.hres << "\n255\n";
+	std::chrono::steady_clock::time_point render_begin = std::chrono::steady_clock::now();
 	for (int r = 0; r < vp.vres; r++) //up
 	{
         cerr << "\rRendering: Row " << r << ' ' << std::flush;
@@ -181,8 +186,10 @@ void Scene::renderScene()
 			DisplayPixel(r, c, pixelColor);
 		}
 	}
+	std::chrono::steady_clock::time_point render_end = std::chrono::steady_clock::now();
+    std::cout << "\nRender Time = " << std::chrono::duration_cast<std::chrono::milliseconds>(render_end - render_begin).count() << "[ms]" << std::endl;
 }
-
+ */
 Record Scene::intersect(const Ray& ra)
 {
 	Record recentHits(*this);

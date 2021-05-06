@@ -2,6 +2,7 @@
 #include "..//Utilities//Color.h"
 #include "..//Utilities//Ray.h"
 #include "..//Utilities//Viewplane.h"
+#include <chrono>
 
 
 Pinhole::Pinhole()
@@ -57,8 +58,8 @@ void Pinhole::renderScene( Scene& scenePtr)
 	vp.pixelSize /= zoom;
 	ra.orig = eye;
 
-	cout << "P3\n" << vp.vres << " " << vp.hres << "\n255\n";
-
+//	cout << "P3\n" << vp.vres << " " << vp.hres << "\n255\n";
+	std::chrono::steady_clock::time_point render_begin = std::chrono::steady_clock::now();
 	for (int r = 0; r < vp.vres; r++)
 	{
 		cerr << "\rRendering: Row " << r << ' ' << std::flush;
@@ -83,6 +84,8 @@ void Pinhole::renderScene( Scene& scenePtr)
 			scenePtr.DisplayPixel(r, c, L);
 		}
 	}
+	std::chrono::steady_clock::time_point render_end = std::chrono::steady_clock::now();
+    std::cout << "\nRender Time = " << std::chrono::duration_cast<std::chrono::milliseconds>(render_end - render_begin).count() << "[ms]" << std::endl;
 }
 
 

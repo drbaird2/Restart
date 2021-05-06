@@ -8,7 +8,9 @@ Triangle::Triangle():
 	v1(0,0,1),
 	v2(1,0,0),
 	norm(0,1,0)
-{}
+{
+	n0 = n1 = n2 = norm;
+}
 
 Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c):
 	Object(),
@@ -18,6 +20,7 @@ Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c):
 {
 	norm = (v1 - v0).cross((v2 - v0));
 	norm.unit_vector();
+	n0 = n1 = n2 = norm;
 }
 
 Triangle::Triangle(const Triangle& triangle):
@@ -25,7 +28,10 @@ Triangle::Triangle(const Triangle& triangle):
 	v0(triangle.v0),
 	v1(triangle.v1),
 	v2(triangle.v2),
-	norm(triangle.norm)
+	norm(triangle.norm),
+	n0(triangle.n0),
+	n1(triangle.n1),
+	n2(triangle.n2)
 {}
 
 Triangle::~Triangle()
@@ -42,6 +48,9 @@ Triangle& Triangle::operator=(const Triangle& rhs)
 	v1 = rhs.v1;
 	v2 = rhs.v2;
 	norm = rhs.norm;
+	n0 = rhs.n0;
+	n1 = rhs.n1;
+	n2 = rhs.n2;
 	return *this;
 }
 
@@ -191,3 +200,9 @@ bool Triangle::getBoundingBox(AABB& outputBox) const
     outputBox = AABB(ansMin, ansMax);
 	return true;
 } 
+
+Vec3 Triangle::getFaceNormal() const {
+	Vec3 e1 = v1 - v0;
+	Vec3 e2 = v2 - v0;
+	return e1.cross(e2);
+}

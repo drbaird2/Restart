@@ -11,6 +11,9 @@ class Triangle: public Object {
 
         Point3	v0, v1, v2;
 		Normal	norm;
+		Normal n0;
+		Normal n1;
+		Normal n2;
 	
 		Triangle();   												
 				
@@ -21,6 +24,8 @@ class Triangle: public Object {
 		~Triangle();   											
 
 		Triangle& operator= (const Triangle& rhs);
+
+		Vec3 getFaceNormal() const;
 		
 		virtual bool getBoundingBox(AABB& outputBox) const override; 
 		
