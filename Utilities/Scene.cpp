@@ -114,9 +114,9 @@ void Scene::build()
 	matteGreen->setKd(0.2);
 	matteGreen->setCd(solidgreen);
 
-	double radi = 5;
+	double radi = 2;
 	int ranMat, one, two, three;
-	for(int i = 0; i<10000; i++){
+	for(int i = 0; i<100000; i++){
 		shared_ptr<Sphere> sphere = make_shared<Sphere>();		
 		ranMat = random_int(0,3);
 		if(ranMat == 0){
