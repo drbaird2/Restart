@@ -44,7 +44,7 @@ bool Sphere::intersect(const Ray& ra, double& tMin, Record& recentHits)
 			tMin = t;
 			recentHits.sceneNormal = (oc + t * ra.dir) / radius; 
 			recentHits.localHit = ra.orig + t * ra.dir;
-			//recentHits.material_ptr = getMaterial();
+			recentHits.material_ptr = getMaterial();
 			return true;
 		}
 
@@ -54,7 +54,7 @@ bool Sphere::intersect(const Ray& ra, double& tMin, Record& recentHits)
 			tMin = t;
 			recentHits.sceneNormal = (oc + t * ra.orig) / radius;
 			recentHits.localHit = ra.orig + t * ra.dir;
-			//recentHits.material_ptr = getMaterial();
+			recentHits.material_ptr = getMaterial();
 			return true;
 		}
 	}

@@ -31,7 +31,7 @@ Obj::Obj(std::string filePath) {
 
 			// Construct triangle with parsed face info
 			shared_ptr<Triangle> tri = make_shared<Triangle>(vertices[v0], vertices[v1], vertices[v2]);
-			Vec3 n = tri->getFaceNormal();
+			Normal n = tri->getFaceNormal();
 			// Compute vertex normal for each vertex
 			normals[v0] += n;
 			normals[v1] += n;
@@ -60,7 +60,7 @@ vector<shared_ptr<Triangle>> Obj::getMeshes() {
 }
 
 // Update all vertex normals in the triangles
-void Obj::update_vertex_normals() {
+void Obj::update_vertex_normals(shared_ptr<Material> mat) {
 	std::ifstream file(fileName);
 	std::string line;
 	int tri_count = 0;
@@ -72,7 +72,7 @@ void Obj::update_vertex_normals() {
 			int v0 = std::stoi(parsed_int[1]) - 1;
 			int v1 = std::stoi(parsed_int[2]) - 1;
 			int v2 = std::stoi(parsed_int[3]) - 1;
-
+            meshes[tri_count]->setMaterial(mat);
 			// Update per-vertex normals in the triangle
 			meshes[tri_count]->n0 = normals[v0];
 			meshes[tri_count]->n1 = normals[v1];

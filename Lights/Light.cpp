@@ -35,7 +35,7 @@ Color Light::L(Record& recentHits)
 	return black;
 }
 
-float Light::G(const Record& recentHits) const
+float Light::G(const Record& recentHits)
 {
 	return 1.0f;
 }

@@ -17,6 +17,7 @@
 
 //Tracers
 #include "../Tracers/Raycast.h"
+#include "../Tracers/Whitted.h"
 
 //Camera
 #include "../Cameras/Pinhole.h"
@@ -29,9 +30,11 @@
 #include "../Lights/Ambient.h"
 #include "../Lights/Pointlight.h"
 #include "../Lights/Directional.h"
+#include "../Lights/Arealight.h"
 
 //Materials
 #include "../Materials/Matte.h"
+#include "../Materials/Emissive.h"
 
 //BRDFs
 #include "../BRDFs/Lambertian.h"
@@ -83,6 +86,22 @@ void Scene::build()
 	pinholePtr->ComputeUVW();
 	setCamera(pinholePtr);
 
+	shared_ptr<Emissive> glow = make_shared<Emissive>();
+	glow->setCe(white);
+
+
+	shared_ptr<Triangle> shieldTri = make_shared<Triangle>();
+	shieldTri->setMaterial(glow);
+	shieldTri->v0 = Point3(-10,-5,-20);
+	shieldTri->v1 = Point3(10,-5,-20);
+	shieldTri->v2 = Point3(0,5,-20);
+
+	shared_ptr<Arealight> shield = make_shared<Arealight>();
+	shield->setObject(shieldTri);
+	shield->setIsShadow(true);
+
+	addLight(shield);
+
     /* shared_ptr<Orthographic> orthoPtr = make_shared<Orthographic>();
 	orthoPtr->setZWindow(100);
 	setCamera(orthoPtr); */
@@ -114,9 +133,9 @@ void Scene::build()
 	matteGreen->setKd(0.2);
 	matteGreen->setCd(solidgreen);
 
-	double radi = 2;
+	/* double radi = 10;
 	int ranMat, one, two, three;
-	for(int i = 0; i<100000; i++){
+	for(int i = 0; i<100; i++){
 		shared_ptr<Sphere> sphere = make_shared<Sphere>();		
 		ranMat = random_int(0,3);
 		if(ranMat == 0){
@@ -140,9 +159,9 @@ void Scene::build()
 			sphere->setCenter(Point3(-one, -two, -three));
 		}
 		addObject(sphere);
-	}
+	} */
 	
-	/* shared_ptr<Sphere> sphere = make_shared<Sphere>();
+	shared_ptr<Sphere> sphere = make_shared<Sphere>();
 	sphere->setMaterial(matteBlue);
 	sphere->setRadius(20);
 	sphere->setCenter(Point3(45,-7,-30));
@@ -152,15 +171,19 @@ void Scene::build()
 	sphere2->setMaterial(matteRed);
 	sphere2->setRadius(20);
 	sphere2->setCenter(Point3(55,-14,-60));
-	addObject(sphere2); */
+	addObject(sphere2);
 
 //	sort(objects.begin()+0,objects.begin() + objects.size());
 
-//Obj cow("cow.obj");
-//cow.update_vertex_normals();
-	shared_ptr<BVH> tree = make_shared<BVH>(*this);
+/* shared_ptr<Obj> cow = make_shared<Obj>("cow.obj");
+cow->update_vertex_normals(matteBlue);
+for(shared_ptr<Triangle> face:cow->getMeshes()){
+	addObject(face);
+} */
+	/* shared_ptr<BVH> tree = make_shared<BVH>(*this);
 	objects.clear();
-	addObject(tree);
+	addObject(tree); */
+
 }
 
 /* void Scene::renderScene()
@@ -205,7 +228,7 @@ Record Scene::intersect(const Ray& ra)
 		{
 			recentHits.colided = true;
 			tMin = t;
-			recentHits.material_ptr = objects[i]->getMaterial();//recentHits.lastObject->getMaterial();
+			//recentHits.material_ptr = objects[i]->getMaterial();//recentHits.lastObject->getMaterial();
 			recentHits.sceneHit = ra.orig + t * ra.dir;
 			norm = recentHits.sceneNormal;
 			localHit = recentHits.localHit;

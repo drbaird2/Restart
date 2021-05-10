@@ -12,12 +12,12 @@
 #include "Triangle.h"
 
 // Class for parsing obj file and computing per-vertex normals of obj file
-class Obj {
+class Obj : public Object{
 	public:
 		std::string fileName;
 		std::vector<Point3> vertices;
 		std::vector<shared_ptr<Triangle>> meshes;
-		std::vector<Vec3> normals;
+		std::vector<Normal> normals;
 
 	public:
 		Obj();
@@ -26,7 +26,7 @@ class Obj {
 		vector<Point3> getVertices();
 		vector<shared_ptr<Triangle>> getMeshes();
 
-		void update_vertex_normals();
+		void update_vertex_normals(shared_ptr<Material> mat);
 };
 
 

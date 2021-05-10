@@ -20,7 +20,7 @@ class Light{
 
 	virtual Vec3 getDirection(Record& recentHits) = 0;
 	virtual Color L(Record& recentHits);
-	virtual float G(const Record& recentHits) const;
+	virtual float G(const Record& recentHits) ;
 	virtual float pdf(const Record& recentHits) const;
 	virtual bool inShadow(const Ray& ra, const Record& recentHits) const;
 

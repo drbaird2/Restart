@@ -20,6 +20,7 @@ public:
 	~AABB();
 
 	bool intersect(const Ray& ray, double& t, Record& recentHits) const;
+	bool shadowIntersect(const Ray& ra, double& tmin) const;
 
 	int longest_axis() const;
 	double area() const;

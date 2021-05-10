@@ -82,15 +82,30 @@ bool BVH::intersect(const Ray& ra, double& t, Record& recentHits){
     if(hitLeft && hitRight){
         mat = (leftHit < rightHit) ? left->getMaterial() : right->getMaterial();
     } */
-    if(hitLeft && !hitRight){
+    /* if(hitLeft && !hitRight){
         mat = left->getMaterial();
     }else if(hitRight && !hitLeft){
         mat = right->getMaterial();
     }else if(hitRight && hitLeft){
         mat = left->getMaterial();
-    }
+    } */
 
     return hitLeft || hitRight;
+}
+
+bool BVH::shadowIntersect(const Ray& ra, double& tmin)const{
+    if(!box.shadowIntersect(ra,tmin)){
+        return false;
+    }
+    bool hitLeft = left->shadowIntersect(ra,tmin);
+    bool hitRight = right->shadowIntersect(ra, tmin);
+    if(hitRight){
+        return hitRight;
+    }else if(hitLeft){
+        return hitLeft;
+    }else{
+        return false;
+    }
 }
 
 

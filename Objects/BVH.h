@@ -22,7 +22,7 @@ class BVH : public Object {
         BVH( vector<shared_ptr<Object>>& objectList, size_t start, size_t end);
 
         virtual bool intersect(const Ray& ra, double& t, Record& recentHits) override;
-//        virtual bool shadowIntersect(const Ray& ra, double& t) const override;
+        virtual bool shadowIntersect(const Ray& ra, double& t) const override;
 
         virtual bool getBoundingBox(AABB& output_box) const override;
 
