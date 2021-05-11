@@ -18,8 +18,8 @@ Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c):
 	v1(b),
 	v2(c)
 {
-	norm = (v1 - v0).cross((v2 - v0));
-	norm.unit_vector();
+	norm = (v1 - v0) ^ (v2 - v0);
+	norm.normalize();
 	n0 = n1 = n2 = norm;
 }
 
@@ -195,7 +195,7 @@ bool Triangle::getBoundingBox(AABB& outputBox) const
 	ansMax.zPoint = max( {v0.zPoint,v1.zPoint,v2.zPoint} );
 
 	//minus or plus delta ,It means make BBox
-	ansMin = ansMin - delta;
+	ansMin = ansMin - Vec3(0.00001);
 	ansMax = ansMax + delta;
     outputBox = AABB(ansMin, ansMax);
 	return true;
@@ -204,5 +204,5 @@ bool Triangle::getBoundingBox(AABB& outputBox) const
 Vec3 Triangle::getFaceNormal() const {
 	Vec3 e1 = v1 - v0;
 	Vec3 e2 = v2 - v0;
-	return e1.cross(e2);
+	return e1^e2;
 }

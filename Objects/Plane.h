@@ -2,7 +2,8 @@
 #define PLANE_H
 
 #include "Object.h"
-#include "../Utilities/Vec3.h"
+#include "../Utilities/Normal.h"
+#include "../Utilities/Point3.h"
 #include "../Utilities/Ray.h"
 #include "../Utilities/Record.h"
 #include <memory>

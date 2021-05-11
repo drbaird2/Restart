@@ -1,15 +1,7 @@
 
-#ifndef __AREA_LIGHT__
-#define __AREA_LIGHT__
+#ifndef AREALIGHT_H
+#define AREALIGHT_H
 
-// 	Copyright (C) Kevin Suffern 2000-2007.
-//	This C++ code is for non-commercial purposes only.
-//	This C++ code is licensed under the GNU General Public License Version 2.
-//	See the file COPYING.txt for the full license.
-
-
-#include "../Utilities/Color.h"
-#include "../Utilities/Vec3.h"
 #include "Light.h"
 #include "../Materials/Material.h"
 #include "../Objects/Object.h"
@@ -34,11 +26,11 @@ class Arealight: public Light {
 		
 		virtual Color L(Record& recentHits);
 		
-		virtual bool inShadow(const Ray& ra, const Record& recentHits) const;
+		virtual bool inShadow(const Ray& ra, const Record& recentHits) const override;
 		
-		virtual float G(Record& recentHits) ;
+		virtual float G(const Record& recentHits) override;
 		
-		virtual float pdf(Record& recentHits) const;
+		virtual float pdf(const Record& recentHits) const override;
 		
 	public:
 		

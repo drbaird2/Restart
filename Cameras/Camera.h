@@ -4,6 +4,7 @@
 #include <memory>
 #include "..//Utilities//Scene.h"
 #include "..//Utilities//Vec3.h"
+#include "../Utilities/Point3.h"
 
 class Camera {
     public:

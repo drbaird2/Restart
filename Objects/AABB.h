@@ -2,7 +2,7 @@
 #define AABB_H
 
 
-#include "..\Utilities\Vec3.h"
+#include "..\Utilities\Point3.h"
 #include "..\Utilities\Ray.h"
 #include <memory>
 
@@ -28,13 +28,13 @@ public:
 //	bool inside(const Point3& p) const;
 	AABB surroundingBox(AABB box0, AABB box1);
 
-	Point3 cen() const;
+	//Point3 cen() const;
 	Point3 p0;
 	Point3 p1;
-	Point3 centroid;
+	//Point3 centroid;
 };
 
-inline Point3 AABB::cen() const{
+/* inline Point3 AABB::cen() const{
 	return centroid;
-}
+} */
 #endif

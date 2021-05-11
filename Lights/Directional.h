@@ -25,6 +25,7 @@ public:
 	void setColor(const double r, const double g, const double b);
 	void setDirection(Vec3 d);
 	void setDirection(double dx, double dy, double dz);
+	
 	Vec3 getDirection(Record& recentHits) override;
 	Color L(Record& recentHits) override;
 	bool inShadow(const Ray& ra, const Record& recentHits) const override;

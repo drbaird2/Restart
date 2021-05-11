@@ -3,8 +3,9 @@
 
 #include "Ray.h"
 #include "Color.h"
-//#include "Scene.h"
-//#include "../Materials/Material.h"
+#include "Point3.h"
+#include "Normal.h"
+#include "../Objects/Object.h"
 #include <memory>
 
 using namespace std;
@@ -13,26 +14,25 @@ class Scene;
 class Material;
 class Object;
 
-class Record{
+struct Record{
     public:
         bool                    colided;
         shared_ptr<Material>    material_ptr;
         Point3                  sceneHit;
-        Point3                  localHit;
         Normal                  sceneNormal;
-        Color                   col;
         Ray                     sceneRay;
-        int                     depth;
-        Vec3                    lightDir;
+        int                     depth; 
         Scene&                  sceneRef;
         shared_ptr<Object>      lastObject;
         double                  t;
         double                  u;
         double                  v;
-
+        Vec3                    lightDir;
+        Color                   col;
+        Point3                  localHit;
         Record(Scene& scene);
         Record(const Record& recentHits);
-        ~Record();                 
+        ~Record();
 };
 
 #endif

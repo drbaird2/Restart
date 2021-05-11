@@ -17,10 +17,13 @@ class Whitted: public Tracer {
 		
 		Whitted(Scene* sceneRef);
 		
-		virtual											
-		~Whitted(void);
+		virtual	~Whitted(void);
 	
-		virtual Color traceRay(const Ray& ra, const int depth) const;
+		Color traceRay(const Ray& ra, const int depth) const override;
+
+		Color traceRay(const Ray& ray, double& tMin, const int depth) const override;
+
+
 };
 
 #endif

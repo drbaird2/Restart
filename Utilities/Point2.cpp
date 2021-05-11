@@ -5,14 +5,14 @@ Point2::Point2()
 	, yPoint(0.0)
 {}
 
-Point2::Point2(const double num)
+Point2::Point2(const float num)
 	: xPoint(num)
 	, yPoint(num)
 {
 
 }
 
-Point2::Point2(const double x, const double y)
+Point2::Point2(const float x, const float y)
 	: xPoint(x)
 	, yPoint(y)
 {
@@ -42,9 +42,4 @@ Point2& Point2::operator=(const Point2& rhs)
 	yPoint = rhs.yPoint;
 
 	return *this;
-}
-
-Point2 Point2::operator*(const double a)
-{
-	return (Point2(a * xPoint, a * yPoint));
 }

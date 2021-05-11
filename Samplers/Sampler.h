@@ -3,6 +3,7 @@
 
 #include "../Utilities/Point2.h"
 #include "../Utilities/Vec3.h"
+#include "../Utilities/Point3.h"
 #include <vector>
 #include <memory>
 

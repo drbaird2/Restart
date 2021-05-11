@@ -2,6 +2,7 @@
 #define RAY_H
 
 #include "Vec3.h"
+#include "Point3.h"
 
 class Ray{
     public:
@@ -16,20 +17,8 @@ class Ray{
 
         Ray& operator= (const Ray& rhs);
 
-        Point3 at(double t);
-
 };
 
-inline Ray& Ray::operator=(const Ray& rhs){
-    
-    if (this == &rhs){
-		return (*this);
-	}
 
-	orig = rhs.orig;
-	dir = rhs.dir;
-
-	return (*this);
-}
 
 #endif

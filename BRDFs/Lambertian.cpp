@@ -41,7 +41,17 @@ Color Lambertian::func(const Record& recentHits, const Vec3& wo, const Vec3& wi)
 }
 
 Color Lambertian::sampleFunc(const Record& recentHits, const Vec3& wo, Vec3& wi, float& pdf) const{
-	return cd * kd * invPI;
+	Vec3 w = recentHits.sceneNormal;
+	Vec3 v = Vec3(0.0034, 1.0, 0.0071) ^ w;
+	v.unit_vector();
+	Vec3 u = v ^ w;
+
+	Point3 sp = samplerPtr->sampleHemisphere();
+	wi = sp.xPoint * u + sp.yPoint * v + sp.zPoint * w;
+	wi.unit_vector();
+	pdf = recentHits.sceneNormal * wi * invPI;
+
+	return kd * cd * invPI;
 }
 
 Color Lambertian::rho(const Record& recentHits, const Vec3& wo) const{

@@ -40,7 +40,7 @@ Point3 Object::sample(){
     return Point3();
 }
 
-float Object::pdf(Record& recentHits){
+float Object::pdf(const Record& recentHits){
     return 1.0f;
 }
 

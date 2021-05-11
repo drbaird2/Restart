@@ -6,6 +6,7 @@
 
 #include "Arealight.h"
 #include "../Utilities/Constants.h"
+#include <numeric>
 
 // ---------------------------------------------------------------- default constructor
 	
@@ -57,24 +58,19 @@ Arealight::~Arealight(void) {
 Arealight& Arealight::operator= (const Arealight& rhs) {
 	if (this == &rhs)
 		return (*this);
-		
-	Light::operator=(rhs);
-	
-	if (objectPtr) {
+
+	if (rhs.objectPtr){
 		objectPtr.reset();
-		objectPtr = NULL;
+		objectPtr = rhs.objectPtr;
 	}
 
-	if (rhs.objectPtr)
-		objectPtr = rhs.objectPtr->clone();
-		
-	if (materialPtr) {
+
+
+	if (rhs.materialPtr){
 		materialPtr.reset();
-		materialPtr = NULL;
+		materialPtr = rhs.materialPtr;
 	}
-
-	if (rhs.materialPtr){}
-		//materialPtr = rhs.materialPtr->clone();
+		
 
 	return (*this);
 }
@@ -95,7 +91,7 @@ Vec3 Arealight::getDirection(Record& recentHits) {
 // --------------------------------------------------------------- L
 
 Color Arealight::L(Record& recentHits) {
-	float ndotd = -lightNormal.dot(wi); 
+	float ndotd = -lightNormal*wi; 
 	
 	if (ndotd > 0.0)		
 		return (materialPtr->getLe(recentHits)); 
@@ -107,13 +103,20 @@ Color Arealight::L(Record& recentHits) {
 // ---------------------------------------------------------------- in_shadow	
 
 bool Arealight::inShadow(const Ray& ra, const Record& recentHits) const {
-	double t;
+	double t = kHugeValue;
 	int num_objects = recentHits.sceneRef.objects.size();
-	float ts = (samplePoint - ra.orig).dot(ra.dir);
+	float ts = (samplePoint - ra.orig)*ra.dir;
 	
-	for (int j = 0; j < num_objects; j++)
-		if (recentHits.sceneRef.objects[j]->shadowIntersect(ra, t) && t < ts)
+	for (int j = 0; j < num_objects; j++){
+		if (!recentHits.sceneRef.objects[j]->getIsShadow())
+		{
+			continue;
+		}
+		if (recentHits.sceneRef.objects[j]->shadowIntersect(ra, t) && t < ts){
 			return (true); 
+		}
+
+	}
 		
 	return (false);     
 }
@@ -122,9 +125,9 @@ bool Arealight::inShadow(const Ray& ra, const Record& recentHits) const {
 // ---------------------------------------------------------------- G
 // G is part of the geometric factor
 
-float Arealight::G(Record& recentHits)  {
-	float ndotd = -lightNormal.dot(wi);
-	float d2 	= (samplePoint-recentHits.sceneHit).length_squared();
+float Arealight::G(const Record& recentHits)  {
+	float ndotd = -lightNormal*wi;
+	float d2 	= samplePoint.distance(recentHits.sceneHit)* samplePoint.distance(recentHits.sceneHit);
 		
 	return (ndotd / d2);
 }
@@ -132,7 +135,7 @@ float Arealight::G(Record& recentHits)  {
 
 // ---------------------------------------------------------------- pdf
 
-float Arealight::pdf(Record& recentHits) const {
+float Arealight::pdf(const Record& recentHits) const {
 	return (objectPtr->pdf(recentHits));
 }
 

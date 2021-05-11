@@ -120,7 +120,7 @@ Color Matte::shade(Record& recentHits)
 	for (int j = 0; j < numLights; j++)
 	{
 		Vec3 wi = recentHits.sceneRef.lights[j]->getDirection(recentHits);
-		float nDotWi = recentHits.sceneNormal.dot(wi);
+		float nDotWi = recentHits.sceneNormal*wi;
 
 		if (nDotWi > 0.0)
 		{
@@ -146,7 +146,7 @@ Color Matte::pathShade(Record& recentHits){
 	Vec3 wo = -recentHits.sceneRay.dir;
 	float pdf;
 	Color f = diffuseBRDF->sampleFunc(recentHits, wo, wi, pdf);
-	float nDotWi = recentHits.sceneNormal.dot(wi);
+	float nDotWi = recentHits.sceneNormal*wi;
 	Ray reflected_ray(recentHits.sceneHit, wi);
 
 	return (f * recentHits.sceneRef.tracerPtr->traceRay(reflected_ray, recentHits.depth + 1) * nDotWi / pdf);
@@ -165,7 +165,7 @@ Color Matte::globalShade(Record& recentHits)
 	Vec3 wo = -recentHits.sceneRay.dir;
 	float pdf;
 	Color f = diffuseBRDF->sampleFunc(recentHits, wo, wi, pdf);
-	float nDotWi = recentHits.sceneNormal.dot(wi);
+	float nDotWi = recentHits.sceneNormal*wi;
 	Ray reflected_ray(recentHits.sceneHit, wi);
 
 	L += (f * recentHits.sceneRef.tracerPtr->traceRay(reflected_ray, recentHits.depth + 1) * nDotWi / pdf);
@@ -182,7 +182,7 @@ Color Matte::areaLightShade(Record& recentHits)
 	for (int j = 0; j < numLights; j++)
 	{
 		Vec3 wi = recentHits.sceneRef.lights[j]->getDirection(recentHits);
-		float nDotWi = recentHits.sceneNormal.dot(wi);
+		float nDotWi = recentHits.sceneNormal*wi;
 		if (nDotWi > 0.0)
 		{
 			bool inShadow = false;

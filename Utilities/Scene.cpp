@@ -12,12 +12,15 @@
 #include "../Objects/Plane.h"
 #include "../Objects/Triangle.h"
 #include "../Objects/AABB.h"
+#include "../Objects/Rectangle.h"
 #include "../Objects/BVH.h"
 #include "../Objects/Obj.h"
+#include "../Objects/Box.h"
 
 //Tracers
 #include "../Tracers/Raycast.h"
 #include "../Tracers/Whitted.h"
+#include "../Tracers/Arealights.h"
 
 //Camera
 #include "../Cameras/Pinhole.h"
@@ -35,9 +38,11 @@
 //Materials
 #include "../Materials/Matte.h"
 #include "../Materials/Emissive.h"
+#include "../Materials/Phong.h"
 
 //BRDFs
 #include "../BRDFs/Lambertian.h"
+#include "../BRDFs/GlossySpecular.h"
 
 
 
@@ -56,16 +61,28 @@ Scene::~Scene()
 
 void Scene::build()
 {
+	int numSamples = 16;
+	shared_ptr<MultiJittered> samp = make_shared<MultiJittered>(numSamples);
 	vp.setHres(600);
 	vp.setVres(600);
     vp.setPixelSize(1);
-	int numSamples = 16;
 	vp.setSamples(numSamples);
-	vp.setSampler(move(make_shared<MultiJittered>(numSamples)));
+	vp.setSampler(samp);
 	vp.setMaxDepth(10);
-	backgroundColor = black;
+	backgroundColor = Color(0.5);
 
-	tracerPtr = make_shared<Raycast>(this);
+	//tracerPtr = make_shared<Raycast>(this);
+	tracerPtr = make_shared<AreaLights>(this);
+
+	shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
+	pinholePtr->setEye(-20, 10, 20);
+	pinholePtr->setLookAt(0, 2, 0);
+	pinholePtr->setViewDistance(1080);
+	//pinholePtr->setZoom(1.0);
+	pinholePtr->ComputeUVW();
+	setCamera(pinholePtr);
+
+
 
 	shared_ptr<Ambient> ambientPtr = make_shared<Ambient>();
 	ambientPtr->setScaleRadiance(1.0);
@@ -75,32 +92,34 @@ void Scene::build()
 	flashlight->setDirection(0, 0, 0);  
 //	flashlight->setColor(solidblue);  			
 	flashlight->setScaleRadiance(4.0);			
-	flashlight->setIsShadow(true);    
+	flashlight->setIsShadow(false);    
 	addLight(flashlight);
 
-    shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
-	pinholePtr->setEye(0, 0, 10000);
-	pinholePtr->setLookAt(0, 0, 0);
-	pinholePtr->setViewDistance(15000);
-	//pinholePtr->setZoom(1.0);
-	pinholePtr->ComputeUVW();
-	setCamera(pinholePtr);
-
-	shared_ptr<Emissive> glow = make_shared<Emissive>();
+    shared_ptr<Emissive> glow = make_shared<Emissive>();
 	glow->setCe(white);
+	glow->setLadiance(40.0);
 
+	double width = 4;
+	double height = 4;
+	Point3 center(0.0, 7.0, -7.0);
+	Point3 p0(-0.5 * width, center.yPoint - 0.5 * height, center.zPoint);
+	Vec3 a(width, 0.0, 0.0);
+	Vec3 b(0.0, height, 0.0);
+	Normal norm(0, 0, 1);
 
-	shared_ptr<Triangle> shieldTri = make_shared<Triangle>();
-	shieldTri->setMaterial(glow);
-	shieldTri->v0 = Point3(-10,-5,-20);
-	shieldTri->v1 = Point3(10,-5,-20);
-	shieldTri->v2 = Point3(0,5,-20);
+	shared_ptr<Rectangle> rectang = make_shared<Rectangle>(p0,a,b,norm);
+	rectang->setMaterial(glow);
+	rectang->SetSampler(samp);
+	rectang->setIsShadow(false);
+	addObject(rectang);
 
 	shared_ptr<Arealight> shield = make_shared<Arealight>();
-	shield->setObject(shieldTri);
+	shield->setObject(rectang);
 	shield->setIsShadow(true);
-
 	addLight(shield);
+
+	//addLight(shield);
+	//addObject(shieldTri);
 
     /* shared_ptr<Orthographic> orthoPtr = make_shared<Orthographic>();
 	orthoPtr->setZWindow(100);
@@ -109,13 +128,13 @@ void Scene::build()
 	/* shared_ptr<PointLight> god = make_shared<PointLight>();
 	god->setLocation(100,50,150);
 	god->setScaleRadiance(3.0);
-	addLight(god); */
+	addLight(god);
 
 	shared_ptr<PointLight> jesus = make_shared<PointLight>();
 	jesus->setLocation(100,100,200);
 	jesus->setScaleRadiance(3.0);
-	jesus->setIsShadow(true);
-	addLight(jesus);
+	jesus->setIsShadow(false);
+	addLight(jesus); */
 
 	shared_ptr<Matte> matteRed = make_shared<Matte>();
 	matteRed->setKa(0.3);
@@ -124,8 +143,8 @@ void Scene::build()
 	
 
 	shared_ptr<Matte> matteBlue = make_shared<Matte>();
-	matteBlue->setKa(0.35);
-	matteBlue->setKd(0.50);
+	matteBlue->setKa(0.1);
+	matteBlue->setKd(0.90);
 	matteBlue->setCd(solidblue);
 
 	shared_ptr<Matte> matteGreen = make_shared<Matte>();
@@ -133,7 +152,7 @@ void Scene::build()
 	matteGreen->setKd(0.2);
 	matteGreen->setCd(solidgreen);
 
-	/* double radi = 10;
+	/* double radi = 5;
 	int ranMat, one, two, three;
 	for(int i = 0; i<100; i++){
 		shared_ptr<Sphere> sphere = make_shared<Sphere>();		
@@ -146,9 +165,9 @@ void Scene::build()
 			sphere->setMaterial(matteBlue);
 		}
 		sphere->setRadius(radi);
-		one =  random_int(0,199);
-		two = random_int(0,199);
-		three = random_int(0,400);
+		one =  random_int(0,20);
+		two = random_int(0,20);
+		three = random_int(0,40);
 		if(i%4 == 0){
 			sphere->setCenter(Point3(one, two, -three));
 		}else if(i%4 == 1){
@@ -161,7 +180,7 @@ void Scene::build()
 		addObject(sphere);
 	} */
 	
-	shared_ptr<Sphere> sphere = make_shared<Sphere>();
+	/* shared_ptr<Sphere> sphere = make_shared<Sphere>();
 	sphere->setMaterial(matteBlue);
 	sphere->setRadius(20);
 	sphere->setCenter(Point3(45,-7,-30));
@@ -172,6 +191,44 @@ void Scene::build()
 	sphere2->setRadius(20);
 	sphere2->setCenter(Point3(55,-14,-60));
 	addObject(sphere2);
+
+	shared_ptr<Rectangle> test = make_shared<Rectangle>();
+	test->SetAB(Vec3(1,1,0),Vec3(-1,-1,0));
+	test->SetP0(Point3(0,0,-30));
+	test->setMaterial(matteBlue);
+	addObject(test); */
+
+	float box_width 	= 1.0; 		// x dimension
+	float box_depth 	= 1.0; 		// z dimension
+	float box_height 	= 4.5; 		// y dimension
+	float gap			= 3.0; 
+
+	shared_ptr<Box> box_ptr0 = make_shared<Box>(Point3(- 1.5 * gap - 2.0 * box_width, 0.0, -0.5 * box_depth), 
+							Point3(-1.5 * gap  - box_width, box_height, 0.5 * box_depth)); 
+	box_ptr0->setMaterial(matteGreen);
+	addObject(box_ptr0);
+	
+	shared_ptr<Box> box_ptr1 = make_shared<Box>(Point3(- 0.5 * gap - box_width, 0.0, -0.5 * box_depth), 
+							Point3(-0.5 * gap, box_height, 0.5 * box_depth)); 
+	box_ptr1->setMaterial(matteGreen);
+	addObject(box_ptr1);
+		
+	shared_ptr<Box> box_ptr2 = make_shared<Box>(Point3(0.5 * gap, 0.0, -0.5 * box_depth), 
+							Point3(0.5 * gap + box_width, box_height, 0.5 * box_depth));
+	box_ptr2->setMaterial(matteGreen);
+	addObject(box_ptr2);
+	
+	shared_ptr<Box> box_ptr3 = make_shared<Box>(Point3(1.5 * gap + box_width, 0.0, -0.5 * box_depth), 
+							Point3(1.5 * gap + 2.0 * box_width, box_height, 0.5 * box_depth));
+	box_ptr3->setMaterial(matteGreen);
+	addObject(box_ptr3);
+
+		
+	// ground plane
+		
+	/* shared_ptr<Plane> plane_ptr = make_shared<Plane>(Point3(0.0), Normal(0, 1, 0)); 
+	plane_ptr->setMaterial(matteBlue);
+	addObject(plane_ptr); */
 
 //	sort(objects.begin()+0,objects.begin() + objects.size());
 

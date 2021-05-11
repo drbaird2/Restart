@@ -4,7 +4,7 @@
 #include "Object.h"
 #include "../Utilities/Record.h"
 #include "../Utilities/Ray.h"
-#include "../Utilities/Vec3.h"
+#include "../Utilities/Point3.h"
 
 
 
@@ -15,7 +15,8 @@ class Sphere : public Object {
         
     public:
         Sphere();
-        Sphere( const Point3& cen, double rad);
+        Sphere( Point3 cen, double rad);
+        Sphere( const Sphere& sphere);
         virtual ~Sphere();
 
         virtual shared_ptr<Sphere> clone() const;

@@ -69,7 +69,7 @@ Color Emissive::shade(Record& recentHits)
 
 Color Emissive::pathShade(Record& recentHits)
 {
-	if (-recentHits.sceneNormal.dot(recentHits.sceneRay.dir) > 0.0)
+	if (-recentHits.sceneNormal * recentHits.sceneRay.dir > 0.0)
 	{
 		return Ce*Ls;
 	}
@@ -86,7 +86,7 @@ Color Emissive::globalShade(Record& recentHits)
 		return black;
 	}
 	
-	if (-recentHits.sceneNormal.dot(recentHits.sceneRay.dir) > 0.0)
+	if (-recentHits.sceneNormal*recentHits.sceneRay.dir > 0.0)
 	{
 		return Ce * Ls;
 	}
@@ -98,7 +98,7 @@ Color Emissive::globalShade(Record& recentHits)
 
 Color Emissive::areaLightShade(Record& recentHits)
 {
-	if (-recentHits.sceneNormal.dot(recentHits.sceneRay.dir) > 0.0)
+	if (-recentHits.sceneNormal*recentHits.sceneRay.dir > 0.0)
 	{
 		return Ce*Ls;
 	}

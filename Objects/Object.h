@@ -40,7 +40,7 @@ class Object{
 
         virtual Point3 sample();
 
-        virtual float pdf(Record& recentHits);
+        virtual float pdf(const Record& recentHits);
 
         virtual Normal getNormal(const Point3& p);
 

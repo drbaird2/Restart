@@ -4,13 +4,14 @@
 #include "../Utilities/Constants.h"
 #include "../Utilities/Ray.h"
 #include "../Utilities/Color.h"
-//#include "../Utilities/Scene.h"
+#include "../Utilities/Scene.h"
 
 class Scene;
 
 class Tracer{
     public:
         Scene* scenePtr;
+        
         Tracer();
         Tracer(Scene* scene_ref);
         virtual ~Tracer();

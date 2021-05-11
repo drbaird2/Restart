@@ -96,9 +96,7 @@ bool PointLight::inShadow(const Ray& ra, const Record& recentHits) const
 {
 	double t;
 	int numObjects = recentHits.sceneRef.objects.size();
-	double dist = sqrt((pow(location.xPoint - ra.orig.xPoint, 2) 
-                        + pow(location.yPoint - ra.orig.yPoint, 2) 
-                        + pow(location.zPoint - ra.orig.zPoint, 2)));
+	double dist = Point3(location.xPoint, location.yPoint,location.zPoint).distance(ra.orig);
 
 	for (int j = 0; j < numObjects; j++)
 	{

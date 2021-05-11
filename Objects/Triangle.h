@@ -4,7 +4,6 @@
 #include "Object.h"
 #include "../Utilities/Record.h"
 #include "../Utilities/Ray.h"
-#include "../Utilities/Vec3.h"
 
 class Triangle: public Object {	
 	public:

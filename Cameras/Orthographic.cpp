@@ -59,7 +59,7 @@ void Orthographic::renderScene(Scene& scenePtr)
 	mt19937 mt(rd());
 	uniform_real_distribution<float> floatRand(0.0f, 1.0f);
 
-	cout << "P3\n" << vp.vres << " " << vp.hres << "\n255\n";
+	//cout << "P3\n" << vp.vres << " " << vp.hres << "\n255\n";
 	for (int r = 0; r < vp.vres; r++) //up
 	{
 		cerr << "\rRendering: Row " << r << ' ' << std::flush;

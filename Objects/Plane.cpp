@@ -12,7 +12,7 @@ Plane::Plane(const Point3& point, const Normal& normal):
 	aPoint(point),
 	theNormal(normal)
 {
-	theNormal.unit_vector();
+	theNormal.normalize();
 }
 
 Plane::Plane(const Plane& plane):
@@ -41,11 +41,11 @@ Plane::~Plane()
 {}
 
 bool Plane::intersect(const Ray& ra, double& tMin, Record& recentHits){
-	auto denomenator = theNormal.dot(ra.dir);
-    if(denomenator ==0){
+	auto denomenator = ra.dir * theNormal;
+    if(denomenator == 0){
         return false;
     }
-	auto numerator = theNormal.dot((aPoint - ra.orig));
+	auto numerator = (aPoint - ra.orig)*theNormal;
     double t = numerator/denomenator;
 	if (t > kEpsilon)
 	{
@@ -64,8 +64,7 @@ bool Plane::intersect(const Ray& ra, double& tMin, Record& recentHits){
 
 bool Plane::shadowIntersect(const Ray& ra, double& tMin) const
 {
-	Vec3 temp = ra.dir;
-	double t = (aPoint - ra.orig).dot(theNormal) / temp.dot(theNormal);
+	double t = (aPoint - ra.orig)*theNormal / (ra.dir*theNormal);
 
 	if (t > kEpsilon)
 	{

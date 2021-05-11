@@ -45,7 +45,7 @@ Obj::Obj(std::string filePath) {
 
 	// Normalize all per-vertex normals
 	for (int i = 0; i < normals.size(); i++) {
-		normals[i].unit_vector();
+		normals[i].normalize();
 	}
 
 	file.close();

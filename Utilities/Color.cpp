@@ -23,13 +23,13 @@ Color::Color():
     blue(0.0)
 {}
 
-Color::Color(double col):
+Color::Color(float col):
     red(col),
     green(col),
     blue(col)
 {}
 
-Color::Color(double r, double g, double b):
+Color::Color(float r, float g, float b):
     red(r),
     green(g),
     blue(b)
@@ -49,7 +49,7 @@ Color::~Color()
  *                      multiplied to the power of power
  * 
  *******************************************************************/
-Color Color::powerColor(double power)const {
+Color Color::powerColor(float power)const {
     return (Color(pow(red,power),pow(green,power),pow(blue,power)));
 }
 
@@ -58,6 +58,6 @@ Color Color::powerColor(double power)const {
  *             the brightness.
  * 
  *******************************************************************/
-double Color::aveColor() const{
+float Color::aveColor() const{
     return (0.333333333333 * (red+green+blue));
 }

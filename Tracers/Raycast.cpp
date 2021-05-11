@@ -2,13 +2,12 @@
 #include "Raycast.h"
 #include "../Utilities/Scene.h"
 #include "../Utilities/Record.h"
+#include "../Utilities/Ray.h"
 #include "../Objects/Sphere.h"
 
 Raycast::Raycast()
 	: Tracer()
-{
-
-}
+{}
 
 Raycast::Raycast(Scene* scene)
 	: Tracer(scene)
@@ -21,7 +20,7 @@ Raycast::~Raycast()
 
 }
 
-Color Raycast::traceRay(const Ray& ra) const
+/* Color Raycast::traceRay(const Ray& ra) const
 {
 	
 	Record recentHits(scenePtr->intersect(ra));
@@ -35,7 +34,7 @@ Color Raycast::traceRay(const Ray& ra) const
 		return (scenePtr->backgroundColor);
 	}
 	
-}
+} */
 
 Color Raycast::traceRay(const Ray& ra, const int depth) const
 {

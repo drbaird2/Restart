@@ -1,24 +1,25 @@
 #include "AABB.h"
 #include "../Utilities/Constants.h"
+#
 
 AABB::AABB()
 	: p0(Point3(0.0,0.0,0.0))
 	, p1(Point3(0.0,0.0,0.0))
 {
-	centroid = (p0 + p1) / 2;
+	// = (p0 + p1) / 2;
 }
 AABB::AABB(Point3 p0, Point3 p1)
 	: p0(p0)
 	, p1(p1)
 {
-	centroid = (p0 + p1) / 2;	
+	//centroid = (p0 + p1) / 2;	
 }
 
 AABB::AABB(const AABB& aab)
 	: p0(aab.p0)
 	, p1(aab.p1)
 {
-	centroid = (p0 + p1) / 2;
+	//centroid = (p0 + p1) / 2;
 }
 
 shared_ptr<AABB> AABB::clone() const

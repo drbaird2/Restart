@@ -43,9 +43,9 @@ void Camera::ComputeUVW()
 {
 	W = eye - lookAt;
     W.unit_vector();
-	U = upDir.cross(W);
+	U = upDir^W;
 	U.unit_vector();
-	V = W.cross(U);
+	V = W^U;
 
 	// process about singularity
 	if (eye.xPoint == lookAt.xPoint && eye.zPoint == lookAt.zPoint)
