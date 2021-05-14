@@ -75,7 +75,7 @@ void Scene::build()
 	tracerPtr = make_shared<AreaLights>(this);
 
 	shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
-	pinholePtr->setEye(-20, 10, 20);
+	pinholePtr->setEye(-15, 35, 25);
 	pinholePtr->setLookAt(0, 2, 0);
 	pinholePtr->setViewDistance(1080);
 	//pinholePtr->setZoom(1.0);
@@ -85,27 +85,28 @@ void Scene::build()
 
 
 	shared_ptr<Ambient> ambientPtr = make_shared<Ambient>();
-	ambientPtr->setScaleRadiance(1.0);
+	ambientPtr->setScaleRadiance(1.5);
 	setAmbientLight(ambientPtr);
 
-	shared_ptr<Directional> flashlight = make_shared<Directional>();
-	flashlight->setDirection(0, 0, 0);  
+	/* shared_ptr<Directional> flashlight = make_shared<Directional>();
+	flashlight->setDirection(0, -1, -1);  
 //	flashlight->setColor(solidblue);  			
 	flashlight->setScaleRadiance(4.0);			
-	flashlight->setIsShadow(false);    
-	addLight(flashlight);
+	flashlight->setIsShadow(true);    
+	addLight(flashlight); */
 
+	//Lights used in Area Light render
     shared_ptr<Emissive> glow = make_shared<Emissive>();
 	glow->setCe(white);
-	glow->setLadiance(40.0);
+	glow->setLadiance(100.0);
 
 	double width = 4;
 	double height = 4;
 	Point3 center(0.0, 7.0, -7.0);
-	Point3 p0(-0.5 * width, center.yPoint - 0.5 * height, center.zPoint);
+	Point3 p0(-0.5 * width - 2, center.yPoint - 0.5 * height + 1, center.zPoint - 4);
 	Vec3 a(width, 0.0, 0.0);
 	Vec3 b(0.0, height, 0.0);
-	Normal norm(0, 0, 1);
+	Normal norm(0, -1, 1);
 
 	shared_ptr<Rectangle> rectang = make_shared<Rectangle>(p0,a,b,norm);
 	rectang->setMaterial(glow);
@@ -118,13 +119,8 @@ void Scene::build()
 	shield->setIsShadow(true);
 	addLight(shield);
 
-	//addLight(shield);
-	//addObject(shieldTri);
 
-    /* shared_ptr<Orthographic> orthoPtr = make_shared<Orthographic>();
-	orthoPtr->setZWindow(100);
-	setCamera(orthoPtr); */
-
+	//Lights used in Multiple sphere render
 	/* shared_ptr<PointLight> god = make_shared<PointLight>();
 	god->setLocation(100,50,150);
 	god->setScaleRadiance(3.0);
@@ -136,12 +132,12 @@ void Scene::build()
 	jesus->setIsShadow(false);
 	addLight(jesus); */
 
+	//Materials used in all renders
 	shared_ptr<Matte> matteRed = make_shared<Matte>();
 	matteRed->setKa(0.3);
 	matteRed->setKd(0.3);
 	matteRed->setCd(solidred);
 	
-
 	shared_ptr<Matte> matteBlue = make_shared<Matte>();
 	matteBlue->setKa(0.1);
 	matteBlue->setKd(0.90);
@@ -149,10 +145,16 @@ void Scene::build()
 
 	shared_ptr<Matte> matteGreen = make_shared<Matte>();
 	matteGreen->setKa(0.1);
-	matteGreen->setKd(0.2);
+	matteGreen->setKd(0.9);
 	matteGreen->setCd(solidgreen);
 
-	/* double radi = 5;
+	shared_ptr<Matte> matteWhite = make_shared<Matte>();
+	matteWhite->setKa(0.1);
+	matteWhite->setKd(0.2);
+	matteWhite->setCd(white);
+
+	//This is the Multiple Sphere render test
+	/* double radi = 10;
 	int ranMat, one, two, three;
 	for(int i = 0; i<100; i++){
 		shared_ptr<Sphere> sphere = make_shared<Sphere>();		
@@ -179,58 +181,35 @@ void Scene::build()
 		}
 		addObject(sphere);
 	} */
-	
-	/* shared_ptr<Sphere> sphere = make_shared<Sphere>();
-	sphere->setMaterial(matteBlue);
-	sphere->setRadius(20);
-	sphere->setCenter(Point3(45,-7,-30));
-	addObject(sphere);
 
-	shared_ptr<Sphere> sphere2 = make_shared<Sphere>();
-	sphere2->setMaterial(matteRed);
-	sphere2->setRadius(20);
-	sphere2->setCenter(Point3(55,-14,-60));
-	addObject(sphere2);
+	//This is the Area Light Scene objects
+	shared_ptr<Sphere> head = make_shared<Sphere>();
+	head->setMaterial(matteBlue);
+	head->setRadius(1);
+	head->setCenter(Point3(0,10,0));
+	addObject(head);
 
-	shared_ptr<Rectangle> test = make_shared<Rectangle>();
-	test->SetAB(Vec3(1,1,0),Vec3(-1,-1,0));
-	test->SetP0(Point3(0,0,-30));
-	test->setMaterial(matteBlue);
-	addObject(test); */
+	shared_ptr<Sphere> body = make_shared<Sphere>();
+	body->setMaterial(matteBlue);
+	body->setRadius(3);
+	body->setCenter(Point3(0,6,0));
+	addObject(body);
 
-	float box_width 	= 1.0; 		// x dimension
-	float box_depth 	= 1.0; 		// z dimension
-	float box_height 	= 4.5; 		// y dimension
-	float gap			= 3.0; 
+	shared_ptr<Box> leftLeg = make_shared<Box>(Point3( -3, 0, -2), Point3(-1,3,0));
+	leftLeg->setMaterial(matteGreen);
+	addObject(leftLeg);
 
-	shared_ptr<Box> box_ptr0 = make_shared<Box>(Point3(- 1.5 * gap - 2.0 * box_width, 0.0, -0.5 * box_depth), 
-							Point3(-1.5 * gap  - box_width, box_height, 0.5 * box_depth)); 
-	box_ptr0->setMaterial(matteGreen);
-	addObject(box_ptr0);
-	
-	shared_ptr<Box> box_ptr1 = make_shared<Box>(Point3(- 0.5 * gap - box_width, 0.0, -0.5 * box_depth), 
-							Point3(-0.5 * gap, box_height, 0.5 * box_depth)); 
-	box_ptr1->setMaterial(matteGreen);
-	addObject(box_ptr1);
+	shared_ptr<Box> rightLeg = make_shared<Box>(Point3( 1, 0, -2), Point3(3,3,0));
+	rightLeg->setMaterial(matteGreen);
+	addObject(rightLeg);
+
+	shared_ptr<Triangle> knife = make_shared<Triangle>(Point3( -1, 7, -1.5), Point3(6,9,-0.5),Point3(6,7,-0.5));
+	knife->setMaterial(matteWhite);
+	addObject(knife);
 		
-	shared_ptr<Box> box_ptr2 = make_shared<Box>(Point3(0.5 * gap, 0.0, -0.5 * box_depth), 
-							Point3(0.5 * gap + box_width, box_height, 0.5 * box_depth));
-	box_ptr2->setMaterial(matteGreen);
-	addObject(box_ptr2);
-	
-	shared_ptr<Box> box_ptr3 = make_shared<Box>(Point3(1.5 * gap + box_width, 0.0, -0.5 * box_depth), 
-							Point3(1.5 * gap + 2.0 * box_width, box_height, 0.5 * box_depth));
-	box_ptr3->setMaterial(matteGreen);
-	addObject(box_ptr3);
-
-		
-	// ground plane
-		
-	/* shared_ptr<Plane> plane_ptr = make_shared<Plane>(Point3(0.0), Normal(0, 1, 0)); 
-	plane_ptr->setMaterial(matteBlue);
-	addObject(plane_ptr); */
-
-//	sort(objects.begin()+0,objects.begin() + objects.size());
+	shared_ptr<Plane> plane_ptr = make_shared<Plane>(Point3(0.0), Normal(0, 1, 0)); 
+	plane_ptr->setMaterial(matteRed);
+	addObject(plane_ptr);
 
 /* shared_ptr<Obj> cow = make_shared<Obj>("cow.obj");
 cow->update_vertex_normals(matteBlue);
@@ -285,7 +264,7 @@ Record Scene::intersect(const Ray& ra)
 		{
 			recentHits.colided = true;
 			tMin = t;
-			//recentHits.material_ptr = objects[i]->getMaterial();//recentHits.lastObject->getMaterial();
+			recentHits.material_ptr = recentHits.lastObject->getMaterial();//recentHits.lastObject->getMaterial();
 			recentHits.sceneHit = ra.orig + t * ra.dir;
 			norm = recentHits.sceneNormal;
 			localHit = recentHits.localHit;
@@ -296,6 +275,7 @@ Record Scene::intersect(const Ray& ra)
 		recentHits.t = tMin;
 		recentHits.sceneNormal = norm;
 		recentHits.localHit = localHit;
+
 	}
 
 	return (recentHits);

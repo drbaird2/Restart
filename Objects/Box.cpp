@@ -13,6 +13,7 @@ Box::Box(const Box& box)
 	, P0(box.P0)
 	, P1(box.P1)
 {
+	mat = box.mat;
 }
 
 Box::~Box()
@@ -132,7 +133,8 @@ bool Box::intersect(const Ray& ray, double& t, Record& recentHits)
 		}
 
 		recentHits.localHit = ray.orig + t * ray.dir;
-        recentHits.material_ptr = getMaterial();
+        //recentHits.material_ptr = getMaterial();
+		recentHits.lastObject = this->clone();
 		return true;
 	}
 	else

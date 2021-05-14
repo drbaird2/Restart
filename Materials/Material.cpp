@@ -10,6 +10,10 @@ Material::Material(const Material& material)
 Material::~Material()
 {}
 
+shared_ptr<Material> Material::clone() const{
+    return make_shared<Material>(*this);
+}
+
 Color Material::shade(Record& recentHits){
     return black;
 }

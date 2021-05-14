@@ -25,8 +25,8 @@ Arealight::Arealight(const Arealight& al)
 		objectPtr = al.objectPtr->clone(); 
 	else  objectPtr = NULL;
 	
-	if(al.materialPtr){}
-		//materialPtr = al.materialPtr->clone(); 
+	if(al.materialPtr)
+		materialPtr = al.materialPtr->clone(); 
 	else  materialPtr = NULL;
 }
 

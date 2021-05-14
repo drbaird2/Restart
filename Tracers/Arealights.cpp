@@ -23,12 +23,13 @@ Color AreaLights::traceRay(const Ray& ray, const int depth) const
 	else
 	{
 
-		Record recentHits(scenePtr->intersect(ray)); //for multi thread
+		Record recentHits(scenePtr->intersect(ray)); 
 
 		if (recentHits.colided)
 		{
 			recentHits.sceneRay = ray;
 			recentHits.depth = depth;
+
 			return recentHits.material_ptr->areaLightShade(recentHits);
 		}
 		else

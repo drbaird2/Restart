@@ -19,7 +19,9 @@ Plane::Plane(const Plane& plane):
 	Object(),
 	aPoint(plane.aPoint),
 	theNormal(plane.theNormal)
-{}
+{
+	mat = plane.mat;
+}
 
 std::shared_ptr<Plane> Plane::clone() const{
 	return make_shared<Plane>(*this);
@@ -52,7 +54,8 @@ bool Plane::intersect(const Ray& ra, double& tMin, Record& recentHits){
 		tMin = t;
 		recentHits.sceneNormal = theNormal;
 		recentHits.localHit = ra.orig + t * ra.dir;
-		recentHits.material_ptr = getMaterial();
+		//recentHits.material_ptr = getMaterial();
+		recentHits.lastObject = this->clone();
 
 		return (true);
 	}

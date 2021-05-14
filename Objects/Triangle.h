@@ -20,7 +20,9 @@ class Triangle: public Object {
 	
 		Triangle(const Triangle& triangle); 							
 
-		~Triangle();   											
+		~Triangle();   		
+
+		shared_ptr<Triangle> clone() const;									
 
 		Triangle& operator= (const Triangle& rhs);
 

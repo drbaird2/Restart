@@ -64,6 +64,7 @@ Rectangle::Rectangle(const Rectangle& rect)
 	{
 		samplePtr = nullptr;
 	}
+	mat = rect.mat;
 }
 
 Rectangle& Rectangle::operator=(const Rectangle& rhs)
@@ -131,7 +132,8 @@ bool Rectangle::intersect(const Ray& ray, double& tMin, Record& recentHits)
 	tMin = t;
 	recentHits.sceneNormal = norm;
 	recentHits.localHit = p;
-    recentHits.material_ptr = getMaterial();
+    //recentHits.material_ptr = getMaterial();
+	recentHits.lastObject = this->clone();
 	return true;
 }
 

@@ -21,6 +21,7 @@ Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c):
 	norm = (v1 - v0) ^ (v2 - v0);
 	norm.normalize();
 	n0 = n1 = n2 = norm;
+	
 }
 
 Triangle::Triangle(const Triangle& triangle):
@@ -32,10 +33,17 @@ Triangle::Triangle(const Triangle& triangle):
 	n0(triangle.n0),
 	n1(triangle.n1),
 	n2(triangle.n2)
-{}
+{
+	mat = triangle.mat;
+}
 
 Triangle::~Triangle()
 {}
+
+shared_ptr<Triangle> Triangle::clone() const
+{
+	return make_shared<Triangle>((*this));
+}
 
 Triangle& Triangle::operator=(const Triangle& rhs)
 {
@@ -113,7 +121,8 @@ bool Triangle::intersect(const Ray& ra, double& tMin, Record& recentHits)
 	tMin = t;
 	recentHits.sceneNormal = norm;
 	recentHits.localHit = ra.orig + t * ra.dir;
-    recentHits.material_ptr = getMaterial();
+    //recentHits.material_ptr = getMaterial();
+	recentHits.lastObject = this->clone();
 
 	return true;
 }
