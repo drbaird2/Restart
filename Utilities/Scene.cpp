@@ -74,15 +74,15 @@ void Scene::build()
     vp.setPixelSize(1);
 	vp.setSamples(numSamples);
 	vp.setSampler(samp);
-	vp.setMaxDepth(2);
-	backgroundColor = Color(0,0.3,0.25);
+	vp.setMaxDepth(5);
+	backgroundColor = Color(0.34,0.64,0.95);
 
 	//tracerPtr = make_shared<Raycast>(this);
 	//tracerPtr = make_shared<AreaLights>(this);
 	tracerPtr = make_shared<Whitted>(this);
 
 	shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
-	pinholePtr->setEye(-8, 5.5, 40);
+	pinholePtr->setEye(-8, 25, 60);
 	pinholePtr->setLookAt(1, 4, 0);
 	pinholePtr->setViewDistance(2400);
 	//pinholePtr->setZoom(1.0);
@@ -184,17 +184,9 @@ void Scene::build()
 	shared_ptr<Transparent> glass = make_shared<Transparent>();
 	glass->SetKs(0.2);
 	glass->SetExp(2000.0);	
-	glass->SetIor(0.75);			
+	glass->SetIor(1.5);			
 	glass->SetKr(0.1);
 	glass->SetKt(0.9);
-	
-	shared_ptr<Reflective> mirrorRed = make_shared<Reflective>();
-	mirrorRed->SetKa(0.3); 
-	mirrorRed->SetKd(0.3);
-	mirrorRed->SetCd(solidred);    	
-	mirrorRed->SetKs(0.2);
-	mirrorRed->SetExp(2000.0);
-	mirrorRed->set_kr(0.25);
 	
 	
 	//Materials used in Mirror/Metal
@@ -233,13 +225,14 @@ void Scene::build()
 
 //This is the Transparent Test Objects
 
-	shared_ptr<Sphere> sphere_ptr1 = make_shared<Sphere>(Point3(0, 4.5, 0), 3); 
-	sphere_ptr1->setMaterial(glass);
+	shared_ptr<Sphere> sphere_ptr1 = make_shared<Sphere>(Point3(4-4, 4, -8-2), 3); 
+	sphere_ptr1->setMaterial(matteRed);
 	addObject(sphere_ptr1);
 
-	shared_ptr<Sphere> sphere_ptr2 = make_shared<Sphere>(Point3(4, 4, -6), 3); 
-	sphere_ptr2->setMaterial(mirrorRed);
+	shared_ptr<Sphere> sphere_ptr2 = make_shared<Sphere>(Point3(4+2, 4, -8), 3); 
+	sphere_ptr2->setMaterial(glass);
 	addObject(sphere_ptr2);
+
 
 	Point3 p0(-20, 0, -100);
 	Vec3 a(0, 0, 120);
@@ -248,6 +241,19 @@ void Scene::build()
 	shared_ptr<Rectangle> rectangle_ptr = make_shared<Rectangle>(p0, a, b); 
 	rectangle_ptr->setMaterial(matteBlue);
 	addObject(rectangle_ptr);
+
+
+	shared_ptr<Box> box1 = make_shared<Box>(Point3( -6, 0, 3), Point3(4,6,4));
+	box1->setMaterial(glass);
+	addObject(box1);
+
+	shared_ptr<Box> box2 = make_shared<Box>(Point3( -6 + 4, 0, 3-2), Point3(4+4,6+1.5,4-2));
+	box2->setMaterial(glass);
+	addObject(box2);
+
+	shared_ptr<Box> box3 = make_shared<Box>(Point3( -6 + 2, 0, 3-4), Point3(4-1,6+4,4-4));
+	box3->setMaterial(glass);
+	addObject(box3);
 
 	//This is the Mirror/Metal test objects
 	/* shared_ptr<Sphere> sphere_ptr1 = make_shared<Sphere>(Point3(0, 50, -120), 50); 

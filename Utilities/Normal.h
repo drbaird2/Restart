@@ -5,6 +5,23 @@
 #include "Vec3.h"
 #include "Point3.h"
 
+/*******************************************************************
+ * class - Normal
+ * 
+ * A Utility class that represents a Normal vector
+ * 
+ * Variables
+ * double xPoint - represents the x value of the Normal
+ * double yPoint - represents the y value of the Normal
+ * double zPoint - represents the z value of the Normal
+ * 
+ * See Vec3 for Documentation
+ * 
+ * normalize() is the same function as unit_vector()
+ * 
+ *******************************************************************/
+
+
 class Normal {	
 	public:
 	
@@ -12,64 +29,41 @@ class Normal {
 				
 	public:
 	
-		Normal(void);										// default constructor
-		Normal(double a);									// constructor
-		Normal(double x, double y, double z);			// constructor
-		Normal(const Normal& n); 							// copy constructor
-		Normal(const Vec3& v);							// constructs a normal from a vector
+		Normal(void);										
+		Normal(double a);									
+		Normal(double x, double y, double z);		
+		Normal(const Normal& n); 				
+		Normal(const Vec3& v);
 		
-		~Normal(void);										// destructor
+		~Normal(void);
 
-		Normal& 											// assignment operator
-		operator= (const Normal& rhs); 	
+		Normal& operator= (const Normal& rhs); 	
 		
-		Normal& 											// assignment of a vector to a normal
-		operator= (const Vec3& rhs);
+		Normal& operator= (const Vec3& rhs);
 		
-		Normal& 											// assignment of a point to a normal
-		operator= (const Point3& rhs);
+		Normal& operator= (const Point3& rhs);
 		
-		Normal 												// unary minus
-		operator- (void) const;	
+		Normal operator- (void) const;	
 		
-		Normal 												// addition
-		operator+ (const Normal& n) const;
+		Normal operator+ (const Normal& n) const;
 		
-		Normal& 											// compound addition
-		operator+= (const Normal& n);
+		Normal& operator+= (const Normal& n);
 		
-		double
-		operator* (const Vec3& v) const;				// dot product with a vector on the right
+		double operator* (const Vec3& v) const;				
 		
-		Normal 												// multiplication by a double on the right
-		operator* (const double a) const;
+		Normal operator* (const double a) const;
 				
-		void 												// convert normal to a unit normal
-		normalize(void); 									 		
+		void normalize(void); 									 		
 };
 
-
-
-// inlined member functions
-
-// ----------------------------------------------------------------------- operator-
-// unary minus
 
 inline Normal Normal::operator- (void) const {
 	return (Normal(-xPoint, -yPoint, -zPoint));
 }
 
-
-// ----------------------------------------------------------------------- operator+
-// addition of two normals
-
 inline Normal Normal::operator+ (const Normal& n) const {
 	return (Normal(xPoint + n.xPoint, yPoint + n.yPoint, zPoint + n.zPoint));
 }
-
-
-// ----------------------------------------------------------------------- addition
-// compound addition of two normals
 
 inline Normal& Normal::operator+= (const Normal& n) {
 	xPoint += n.xPoint; 
@@ -79,27 +73,14 @@ inline Normal& Normal::operator+= (const Normal& n) {
 }
 
 
-// ----------------------------------------------------------------------- operator*
-// dot product of a normal on the left and a vector on the right
-
 inline double Normal::operator* (const Vec3& v) const {
 	return (xPoint * v.xPoint + yPoint * v.yPoint + zPoint * v.zPoint);
 }
 
 
-// ----------------------------------------------------------------------- operator*
-// multiplication by a double on the right
-
 inline Normal Normal::operator* (const double a) const {
 	return (Normal(xPoint * a, yPoint * a, zPoint * a));
 }
-
-
-
-// inlined non-member functions
-
-// ----------------------------------------------------------------------- operator*
-// multiplication by a double on the left
 
 Normal operator* (const double a, const Normal& n);
 
@@ -108,9 +89,6 @@ inline Normal operator*(const double f, const Normal& n) {
 }
 
 
-// ----------------------------------------------------------------------- operator+
-// addition of a vector on the left to return a vector 
-
 Vec3 operator+ (const Vec3& v, const Normal& n);
 
 inline Vec3 operator+ (const Vec3& v, const Normal& n) {	
@@ -118,34 +96,18 @@ inline Vec3 operator+ (const Vec3& v, const Normal& n) {
 }	
 
 
-// ----------------------------------------------------------------------- operator-
-// subtraction of a normal from a vector to return a vector
-
 Vec3 operator- (const Vec3&, const Normal& n);
 
 inline Vec3 operator- (const Vec3& v, const Normal& n) {
 	return (Vec3(v.xPoint - n.xPoint, v.yPoint - n.yPoint, v.zPoint - n.zPoint));
 }
 
-
-// ----------------------------------------------------------------------- operator*
-// dot product of a vector on the left and a normal on the right
-
 double operator* (const Vec3& v, const Normal& n);
-
 
 inline double operator* (const Vec3& v, const Normal& n) {
 	return (v.xPoint * n.xPoint + v.yPoint * n.yPoint + v.zPoint * n.zPoint);     
 }
 
-// non-inlined non-member function
-
-// ----------------------------------------------------------------------- operator*
-// multiplication by a matrix on the left
-
-Normal 												// prototype							
-operator* (const Matrix& mat, const Normal& n);
-
-
+Normal operator* (const Matrix& mat, const Normal& n);
 
 #endif

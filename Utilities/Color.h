@@ -85,10 +85,12 @@ inline Color& Color::operator=(const Color& rhs) {
     return (*this);
 }
 
-// inlined non-member function
-
-// ----------------------------------------------------------------------- operator*
-// multiplication by a float on the left
+/*******************************************************************
+ * Non-member function
+ * 
+ * Multiplication on the left.
+ * 
+ *******************************************************************/
 
 Color operator* (const float a, const Color& c);
 

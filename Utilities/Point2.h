@@ -1,6 +1,17 @@
 #ifndef POINT2_H
 #define POINT2_H
 
+/*******************************************************************
+ * class - Point2
+ * 
+ * A Utility class that represents a 2 Dimensional Point
+ * 
+ * Variables
+ * double xPoint - represents the x value of the Point
+ * double yPoint - represents the y value of the Point
+ * 
+ *******************************************************************/
+
 class Point2{
 public:
 	float xPoint, yPoint;
@@ -15,8 +26,9 @@ public:
 	Point2 operator*(const float a);
 };
 
-// multiplication by a float on the right
-
+/*******************************************************************
+ * Multiplication to the Right
+ *******************************************************************/
 inline Point2 Point2::operator* (const float a) {
 	return (Point2(xPoint * a, yPoint * a));
 }

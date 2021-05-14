@@ -2,11 +2,15 @@
 #define MATRIX_H
 
 
-// this file contains the declaration of the class Matrix
-// Matrix is a 4 x 4 square matrix that is used to represent affine transformations
-// we don't need a general m x n matrix
+/*******************************************************************
+ * class - Matrix
+ * 
+ * A utility class for the usage of Matrices for affine transformations 
+ * (Not implemented)
+ * A Matrix is a 4X4 square matrix.
+ * 
+ *******************************************************************/
 
-//----------------------------------------- class Matrix
 
 class Matrix {
 	

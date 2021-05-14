@@ -1,5 +1,14 @@
 #include "Point2.h"
 
+/*******************************************************************
+ * Constructors
+ * 
+ * Point2() - default (0,0)
+ * Point2(float) - construct from a single number
+ * Point(float,float) - construct from an x,y pair
+ * Point(Point) - construct a copy of a point
+ *******************************************************************/
+
 Point2::Point2()
 	: xPoint(0.0)
 	, yPoint(0.0)

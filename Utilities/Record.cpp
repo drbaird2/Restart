@@ -1,6 +1,13 @@
 #include "Constants.h"
 #include "Record.h"
 
+/*******************************************************************
+ * Constructors
+ * 
+ * Record(Scene) - defaults to everything zeroed out.
+ * Record(Record) - copy constructor.
+ *******************************************************************/
+
 Record::Record(Scene& scene):
     colided(false),
     material_ptr(nullptr),

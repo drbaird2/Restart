@@ -1,6 +1,9 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
-
+/*******************************************************************
+ * Contains all the Constants and commonly used files and colors
+ * 
+ *******************************************************************/
 #include <stdlib.h>
 #include "../Utilities/Color.h"
 

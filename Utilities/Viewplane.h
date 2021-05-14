@@ -4,6 +4,19 @@
 #include "../Samplers/Sampler.h"
 #include "../Samplers/Multijittered.h"
 
+/*******************************************************************
+ * Class - Viewplane - the view port of the scene, what appears on screen
+ * 
+ * Variables
+ * 
+ * int 					hres - horizontal resoultion
+ * int 					vres - Vertical resolution
+ * double 				pixelSize - size of each pixel block
+ * int 					numSamples - number of rays sampled per pixel
+ * int 					maxDepth - the max number of recursions a ray can make
+ * shared_ptr<Sampler> 	samplerPtr - the sample function used
+ * 
+ *******************************************************************/
 
 class Viewplane{
     public:
@@ -29,6 +42,10 @@ class Viewplane{
 
 };
 
+/*******************************************************************
+ * Assignment operator
+ *******************************************************************/
+
 inline Viewplane& Viewplane::operator=(const Viewplane& rhs){
     if (this == &rhs)
 		return (*this);
@@ -40,6 +57,9 @@ inline Viewplane& Viewplane::operator=(const Viewplane& rhs){
 	return (*this);
 }
 
+/*******************************************************************
+ * Setters and Getters
+ *******************************************************************/
 
 inline void Viewplane::setHres(const int h_res) { 
     hres = h_res;

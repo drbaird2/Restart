@@ -12,6 +12,19 @@ class Point3;
 using std::sqrt;
 using std::fabs;
 
+
+/*******************************************************************
+ * class - Vec3
+ * 
+ * A Utility class that represents a Vector
+ * 
+ * Variables
+ * double xPoint - represents the x value of the vector
+ * double yPoint - represents the y value of the vector
+ * double zPoint - represents the z value of the vector
+ * 
+ *******************************************************************/
+
 class Vec3{
     public:
         double xPoint, yPoint, zPoint;
@@ -29,9 +42,9 @@ class Vec3{
 
         Vec3 operator-() const;
 
-        Vec3& operator= (const Vec3& rhs);				// assignment operator		
-        Vec3& operator= (const Normal& rhs);			// assign a Normal to a vector	
-        Vec3& operator= (const Point3& rhs); 				// assign a Point3D to a vector
+        Vec3& operator= (const Vec3& rhs);					
+        Vec3& operator= (const Normal& rhs);				
+        Vec3& operator= (const Point3& rhs); 				
 		
         double length(void);
         double length_squared(void);
@@ -44,13 +57,12 @@ class Vec3{
 
         std::ostream& operator<<(std::ostream &out);
         
-        Vec3 operator* (const double a) const;												// multiplication by a double on the right
+        Vec3 operator* (const double a) const;												
 		
-        Vec3 operator/ (const double a) const;											// division by a double
-		 
+        Vec3 operator/ (const double a) const;									 
         Vec3 operator+ (const Vec3& v) const;
-											// addition
-        Vec3 operator- (const Vec3& v) const;												// subtraction
+										
+        Vec3 operator- (const Vec3& v) const;		
 		
 		
         double operator* (const Vec3 &v) const;
@@ -58,12 +70,19 @@ class Vec3{
         void unit_vector();
 };
 
-// inlined member functions
-
-// ------------------------------------------------------------------------ unary minus
-// this does not change the current vector
-// this allows ShadeRec objects to be declared as constant arguments in many shading
-// functions that reverse the direction of a ray that's stored in the ShadeRec object
+/*******************************************************************
+ * Inlined Member functions
+ * 
+ * Unary Minus - allows the reversal of the current vector without altering it.
+ * 
+ * len_squared - Returns the square of the length of the current vector
+ * 
+ * Opperator functions for * with doubles as well as the dot product
+ * Opperator functions for -, /, +, and compound versions +=,-=,*=, and /=
+ * Opperator function for ^ to represent cross products.
+ * Opperator function for << to print out values.
+ * 
+ *******************************************************************/
 
 inline Vec3 Vec3::operator- (void) const {
 	return (Vec3 (-xPoint, -yPoint, -zPoint));    
