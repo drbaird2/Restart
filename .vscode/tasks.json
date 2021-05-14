@@ -9,6 +9,7 @@
 				"-g",
 				"${workspaceFolder}\\*.cpp", 
 				"${workspaceFolder}\\BRDFs\\*.cpp",
+				"${workspaceFolder}\\BTDFs\\*.cpp",
 				"${workspaceFolder}\\Cameras\\*.cpp",
 				"${workspaceFolder}\\Lights\\*.cpp",
 				"${workspaceFolder}\\Materials\\*.cpp",

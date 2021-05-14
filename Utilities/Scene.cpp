@@ -39,10 +39,16 @@
 #include "../Materials/Matte.h"
 #include "../Materials/Emissive.h"
 #include "../Materials/Phong.h"
+#include "../Materials/Reflective.h"
+#include "../Materials/Transparent.h"
 
 //BRDFs
 #include "../BRDFs/Lambertian.h"
 #include "../BRDFs/GlossySpecular.h"
+#include "../BRDFs/PerfectSpecular.h"
+
+//BTDFs
+#include "../BTDFs/PerfectTransmitter.h"
 
 
 
@@ -68,16 +74,17 @@ void Scene::build()
     vp.setPixelSize(1);
 	vp.setSamples(numSamples);
 	vp.setSampler(samp);
-	vp.setMaxDepth(10);
-	backgroundColor = Color(0.5);
+	vp.setMaxDepth(2);
+	backgroundColor = Color(0,0.3,0.25);
 
 	//tracerPtr = make_shared<Raycast>(this);
-	tracerPtr = make_shared<AreaLights>(this);
+	//tracerPtr = make_shared<AreaLights>(this);
+	tracerPtr = make_shared<Whitted>(this);
 
 	shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
-	pinholePtr->setEye(-15, 35, 25);
-	pinholePtr->setLookAt(0, 2, 0);
-	pinholePtr->setViewDistance(1080);
+	pinholePtr->setEye(-8, 5.5, 40);
+	pinholePtr->setLookAt(1, 4, 0);
+	pinholePtr->setViewDistance(2400);
 	//pinholePtr->setZoom(1.0);
 	pinholePtr->ComputeUVW();
 	setCamera(pinholePtr);
@@ -85,18 +92,38 @@ void Scene::build()
 
 
 	shared_ptr<Ambient> ambientPtr = make_shared<Ambient>();
-	ambientPtr->setScaleRadiance(1.5);
+	ambientPtr->setScaleRadiance(0.25);
 	setAmbientLight(ambientPtr);
 
-	/* shared_ptr<Directional> flashlight = make_shared<Directional>();
-	flashlight->setDirection(0, -1, -1);  
-//	flashlight->setColor(solidblue);  			
-	flashlight->setScaleRadiance(4.0);			
-	flashlight->setIsShadow(true);    
-	addLight(flashlight); */
+	//Lights used in Mirror/Metal
+	/* shared_ptr<PointLight> shiny = make_shared<PointLight>();
+	shiny->setLocation(150,150,0);
+	shiny->setScaleRadiance(3.0);
+	shiny->setIsShadow(true);
+	addLight(shiny); */
+
+	//Lights used in Transparent scene
+	shared_ptr<PointLight> point1 = make_shared<PointLight>();
+	point1->setLocation(40,50,0);
+	point1->setScaleRadiance(4.5);
+	point1->setIsShadow(true);
+	addLight(point1);
+
+	shared_ptr<PointLight> point2 = make_shared<PointLight>();
+	point2->setLocation(-10,20,10);
+	point2->setScaleRadiance(4.5);
+	point2->setIsShadow(true);
+	addLight(point2);
+
+	shared_ptr<Directional> direct = make_shared<Directional>();
+	direct->setDirection(-1, 0, 0); 
+	direct->setScaleRadiance(4.5);
+	direct->setIsShadow(true);
+	addLight(direct);
+
 
 	//Lights used in Area Light render
-    shared_ptr<Emissive> glow = make_shared<Emissive>();
+    /* shared_ptr<Emissive> glow = make_shared<Emissive>();
 	glow->setCe(white);
 	glow->setLadiance(100.0);
 
@@ -117,7 +144,7 @@ void Scene::build()
 	shared_ptr<Arealight> shield = make_shared<Arealight>();
 	shield->setObject(rectang);
 	shield->setIsShadow(true);
-	addLight(shield);
+	addLight(shield); */
 
 
 	//Lights used in Multiple sphere render
@@ -135,28 +162,141 @@ void Scene::build()
 	//Materials used in all renders
 	shared_ptr<Matte> matteRed = make_shared<Matte>();
 	matteRed->setKa(0.3);
-	matteRed->setKd(0.3);
+	matteRed->setKd(0.9);
 	matteRed->setCd(solidred);
 	
 	shared_ptr<Matte> matteBlue = make_shared<Matte>();
-	matteBlue->setKa(0.1);
-	matteBlue->setKd(0.90);
+	matteBlue->setKa(0.5);
+	matteBlue->setKd(0.35);
 	matteBlue->setCd(solidblue);
 
 	shared_ptr<Matte> matteGreen = make_shared<Matte>();
-	matteGreen->setKa(0.1);
-	matteGreen->setKd(0.9);
+	matteGreen->setKa(0.15);
+	matteGreen->setKd(0.5);
 	matteGreen->setCd(solidgreen);
 
 	shared_ptr<Matte> matteWhite = make_shared<Matte>();
 	matteWhite->setKa(0.1);
 	matteWhite->setKd(0.2);
 	matteWhite->setCd(white);
+	
+	//Materials used in Transparent
+	shared_ptr<Transparent> glass = make_shared<Transparent>();
+	glass->SetKs(0.2);
+	glass->SetExp(2000.0);	
+	glass->SetIor(0.75);			
+	glass->SetKr(0.1);
+	glass->SetKt(0.9);
+	
+	shared_ptr<Reflective> mirrorRed = make_shared<Reflective>();
+	mirrorRed->SetKa(0.3); 
+	mirrorRed->SetKd(0.3);
+	mirrorRed->SetCd(solidred);    	
+	mirrorRed->SetKs(0.2);
+	mirrorRed->SetExp(2000.0);
+	mirrorRed->set_kr(0.25);
+	
+	
+	//Materials used in Mirror/Metal
+	/* shared_ptr<Reflective> mirrorYellow = make_shared<Reflective>();
+	mirrorYellow->SetKa(0.25); 
+	mirrorYellow->SetKd(0.5);
+	mirrorYellow->SetCd(0.75, 0.75, 0);    	// yellow
+	mirrorYellow->SetKs(0.15);
+	mirrorYellow->SetExp(100.0);
+	mirrorYellow->set_kr(0.75);
+	mirrorYellow->set_cr(white);
+
+	shared_ptr<Reflective> mirrorblack = make_shared<Reflective>();			
+	mirrorblack->SetKa(0.35); 
+	mirrorblack->SetKd(0.75);
+	mirrorblack->SetCd(black); 
+	mirrorblack->SetKs(0.0);		// default value
+	mirrorblack->SetExp(1.0);		// default value, but irrelevant in this case
+	mirrorblack->set_kr(0.75);
+	mirrorblack->set_cr(white);
+
+	shared_ptr<Reflective> mirrorCyan = make_shared<Reflective>();			
+	mirrorCyan->SetKa(0.35); 
+	mirrorCyan->SetKd(0.5);
+	mirrorCyan->SetCd(0,0.5,0.75); 
+	mirrorCyan->SetKs(0.2);		// cyan
+	mirrorCyan->SetExp(100.0);		
+	mirrorCyan->set_kr(0.75);
+	mirrorCyan->set_cr(white);
+
+	shared_ptr<Matte> matteOrange = make_shared<Matte>();			
+	matteOrange->setKa(0.45); 
+	matteOrange->setKd(0.75);
+	matteOrange->setCd(0.75, 0.25, 0);   // orange
+ */
+
+//This is the Transparent Test Objects
+
+	shared_ptr<Sphere> sphere_ptr1 = make_shared<Sphere>(Point3(0, 4.5, 0), 3); 
+	sphere_ptr1->setMaterial(glass);
+	addObject(sphere_ptr1);
+
+	shared_ptr<Sphere> sphere_ptr2 = make_shared<Sphere>(Point3(4, 4, -6), 3); 
+	sphere_ptr2->setMaterial(mirrorRed);
+	addObject(sphere_ptr2);
+
+	Point3 p0(-20, 0, -100);
+	Vec3 a(0, 0, 120);
+	Vec3 b(40, 0, 0);
+	
+	shared_ptr<Rectangle> rectangle_ptr = make_shared<Rectangle>(p0, a, b); 
+	rectangle_ptr->setMaterial(matteBlue);
+	addObject(rectangle_ptr);
+
+	//This is the Mirror/Metal test objects
+	/* shared_ptr<Sphere> sphere_ptr1 = make_shared<Sphere>(Point3(0, 50, -120), 50); 
+	sphere_ptr1->setMaterial(mirrorCyan);
+	addObject(sphere_ptr1);
+
+	shared_ptr<Sphere> sphere_ptr2 = make_shared<Sphere>(Point3(0, 100, 0), 25); 
+	sphere_ptr2->setMaterial(matteRed);
+	addObject(sphere_ptr2);
+
+	shared_ptr<Sphere> sphere_ptr3 = make_shared<Sphere>(Point3(45, 25, 35), 25); 
+	sphere_ptr3->setMaterial(mirrorYellow);
+	addObject(sphere_ptr3);
+
+	shared_ptr<Sphere> sphere_ptr4 = make_shared<Sphere>(Point3(-65, 25, 45), 20); 
+	sphere_ptr4->setMaterial(matteGreen);
+	addObject(sphere_ptr4);
+
+	Point3 triA(0,0,50);
+	Point3 triB(50,0,-50);
+	Point3 triC(-50,0,-50);
+	Point3 triD(0,50,0);
+
+	shared_ptr<Triangle> pyBot = make_shared<Triangle>(triA, triB, triC);
+	pyBot->setMaterial(mirrorblack);
+	addObject(pyBot);
+
+	shared_ptr<Triangle> pyL = make_shared<Triangle>(triC, triD, triA);
+	pyL->setMaterial(mirrorblack);
+	addObject(pyL);
+
+	shared_ptr<Triangle> pyR = make_shared<Triangle>(triA, triB, triD);
+	pyR->setMaterial(mirrorblack);
+	addObject(pyR);
+
+	shared_ptr<Triangle> pyB = make_shared<Triangle>(triC, triB, triD);
+	pyB->setMaterial(mirrorblack);
+	addObject(pyB);
+
+	shared_ptr<Plane> plane_ptr = make_shared<Plane>(Point3(0.0), Normal(0, 1, 0)); 
+	plane_ptr->setMaterial(matteBlue);
+	addObject(plane_ptr); */
+
+
 
 	//This is the Multiple Sphere render test
-	/* double radi = 10;
+	/* double radi = 5;
 	int ranMat, one, two, three;
-	for(int i = 0; i<100; i++){
+	for(int i = 0; i<10000; i++){
 		shared_ptr<Sphere> sphere = make_shared<Sphere>();		
 		ranMat = random_int(0,3);
 		if(ranMat == 0){
@@ -167,9 +307,9 @@ void Scene::build()
 			sphere->setMaterial(matteBlue);
 		}
 		sphere->setRadius(radi);
-		one =  random_int(0,20);
-		two = random_int(0,20);
-		three = random_int(0,40);
+		one =  random_int(0,300);
+		two = random_int(0,300);
+		three = random_int(0,300);
 		if(i%4 == 0){
 			sphere->setCenter(Point3(one, two, -three));
 		}else if(i%4 == 1){
@@ -183,7 +323,7 @@ void Scene::build()
 	} */
 
 	//This is the Area Light Scene objects
-	shared_ptr<Sphere> head = make_shared<Sphere>();
+	/* shared_ptr<Sphere> head = make_shared<Sphere>();
 	head->setMaterial(matteBlue);
 	head->setRadius(1);
 	head->setCenter(Point3(0,10,0));
@@ -209,7 +349,7 @@ void Scene::build()
 		
 	shared_ptr<Plane> plane_ptr = make_shared<Plane>(Point3(0.0), Normal(0, 1, 0)); 
 	plane_ptr->setMaterial(matteRed);
-	addObject(plane_ptr);
+	addObject(plane_ptr); */
 
 /* shared_ptr<Obj> cow = make_shared<Obj>("cow.obj");
 cow->update_vertex_normals(matteBlue);
@@ -222,33 +362,7 @@ for(shared_ptr<Triangle> face:cow->getMeshes()){
 
 }
 
-/* void Scene::renderScene()
-{
-	Color pixelColor;
-	Ray ra;
-	double zw = 100.0;
-	double x, y;
-	
-	
-	ra.dir = Vec3(0, 0, -1);
-	//cout << "P3\n" << vp.vres << " " << vp.hres << "\n255\n";
-	std::chrono::steady_clock::time_point render_begin = std::chrono::steady_clock::now();
-	for (int r = 0; r < vp.vres; r++) //up
-	{
-        cerr << "\rRendering: Row " << r << ' ' << std::flush;
-		for (int c = 0; c < vp.hres; c++) //across
-		{
-			x = vp.pixelSize * (c - 0.5 * (vp.hres - 1.0));
-			y = vp.pixelSize * (r - 0.5 * (vp.vres - 1.0));
-			ra.orig = Point3(x, y, zw);
-			pixelColor = tracerPtr->traceRay(ra);
-			DisplayPixel(r, c, pixelColor);
-		}
-	}
-	std::chrono::steady_clock::time_point render_end = std::chrono::steady_clock::now();
-    std::cout << "\nRender Time = " << std::chrono::duration_cast<std::chrono::milliseconds>(render_end - render_begin).count() << "[ms]" << std::endl;
-}
- */
+
 Record Scene::intersect(const Ray& ra)
 {
 	Record recentHits(*this);
@@ -264,7 +378,7 @@ Record Scene::intersect(const Ray& ra)
 		{
 			recentHits.colided = true;
 			tMin = t;
-			recentHits.material_ptr = recentHits.lastObject->getMaterial();//recentHits.lastObject->getMaterial();
+			recentHits.material_ptr = recentHits.lastObject->getMaterial();
 			recentHits.sceneHit = ra.orig + t * ra.dir;
 			norm = recentHits.sceneNormal;
 			localHit = recentHits.localHit;
@@ -287,8 +401,7 @@ void Scene::DisplayPixel(const int row, const int column, const Color& rawColor)
 	Color mappedColor;
 
 	//covert coordinate about y.
-	/* int x = column;
-	int y = vp.vres - row - 1; */
+
 
 	int index = (column * vp.vres) + row;
 
