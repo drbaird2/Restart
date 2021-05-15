@@ -45,7 +45,10 @@ Pinhole& Pinhole::operator=(const Pinhole& rhs)
 
 	return *this;
 }
-
+/*******************************************************************
+ * Main renderscene funtion.
+ * 
+ *******************************************************************/
 void Pinhole::renderScene( Scene& scenePtr)
 {
 	Color L;

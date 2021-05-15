@@ -3,6 +3,13 @@
 
 #include "Tracer.h"
 
+/*******************************************************************
+ * Class - AreaLights - inherits from Tracer
+ * 
+ * The tracer that is used to gather illumnation and make diffuse shadows
+ * 
+ *******************************************************************/
+
 class AreaLights : public Tracer
 {
 public:

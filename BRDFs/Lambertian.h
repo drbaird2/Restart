@@ -3,6 +3,13 @@
 
 #include "BRDF.h"
 
+/*******************************************************************
+ * Class - Lambertian inherits from BRDF
+ * 
+ * The brdf for diffuse materials
+ * 
+ *******************************************************************/
+
 class Lambertian : public BRDF{
     public:
         double kd;

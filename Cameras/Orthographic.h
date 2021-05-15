@@ -3,6 +3,13 @@
 
 #include "Camera.h"
 
+/*******************************************************************
+ * Class - Orthographic inherits from Camera
+ * 
+ * A version of the camera that allows for orthographic projection
+ * single direction, multiple eye points
+ * 
+ *******************************************************************/
 class Orthographic : public Camera{
     public:
         double zWindow;

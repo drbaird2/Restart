@@ -2,6 +2,9 @@
 #include <random>
 #include <cmath>
 
+/*******************************************************************
+ * Constructors
+ *******************************************************************/
 MultiJittered::MultiJittered(): 
     Sampler()
 {
@@ -27,6 +30,9 @@ MultiJittered::MultiJittered(const MultiJittered& mjs):
 MultiJittered::~MultiJittered()
 {}
 
+/*******************************************************************
+ * Assignment Operator
+ *******************************************************************/
 MultiJittered& MultiJittered::operator=(const MultiJittered& rhs)
 {
 	if (this == &rhs)
@@ -44,6 +50,14 @@ shared_ptr<Sampler> MultiJittered::clone() const
 	return move(make_shared<Sampler>(*this));
 }
 
+/*******************************************************************
+ * Generate our samples
+ * First create an array and fill it with points
+ * Then generate random samples
+ * Shuffle our x within a smaller cell
+ * Shuffle our y within a smaller cell
+ * 
+ *******************************************************************/
 void MultiJittered::generateSamples(){
 	int n = sqrt(numSamples);
 	float subCellWidth = 1.0 / numSamples;

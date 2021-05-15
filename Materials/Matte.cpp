@@ -111,6 +111,13 @@ void Matte::setSamples(const int numSamples){
 	diffuseBRDF->setSamples(numSamples);
 }
 
+/*******************************************************************
+ * The regular shade version for Raycasting
+ * grab the ambient light
+ * then go through each light and check if it is in a shadow
+ * if it is not add the diffuse component
+ * 
+ *******************************************************************/
 Color Matte::shade(Record& recentHits)
 {
 	Vec3 wo = -recentHits.sceneRay.dir;
@@ -173,6 +180,13 @@ Color Matte::globalShade(Record& recentHits)
 	return L;
 }
 
+/*******************************************************************
+ * Arealight shade version
+ * grab the ambient light
+ * check for shadow, if it isn't we grab the diffuse component
+ * which falls off due to the geometric factor
+ * 
+ *******************************************************************/
 Color Matte::areaLightShade(Record& recentHits)
 {
 	Vec3 wo = -recentHits.sceneRay.dir;

@@ -8,7 +8,7 @@
 #include "../Utilities/Constants.h"
 #include <numeric>
 
-// ---------------------------------------------------------------- default constructor
+
 	
 Arealight::Arealight(void): 	
         Light(),
@@ -17,7 +17,7 @@ Arealight::Arealight(void):
 {}	
 
 
-// ---------------------------------------------------------------- copy constructor 
+
 	
 Arealight::Arealight(const Arealight& al)
 	: 	Light(al) {
@@ -31,14 +31,13 @@ Arealight::Arealight(const Arealight& al)
 }
 
 
-// ---------------------------------------------------------------- clone
 
 shared_ptr<Arealight> Arealight::clone(void) {
 	return make_shared<Arealight>(*this);
 }					
 
 
-// ---------------------------------------------------------------- destructor
+
  								
 Arealight::~Arealight(void) {
 	if (objectPtr) {
@@ -53,7 +52,6 @@ Arealight::~Arealight(void) {
 }
 
 
-// --------------------------------------------------------------- assignment operator
 
 Arealight& Arealight::operator= (const Arealight& rhs) {
 	if (this == &rhs)
@@ -76,7 +74,10 @@ Arealight& Arealight::operator= (const Arealight& rhs) {
 }
 
 
-// --------------------------------------------------------------- get_direction
+/*******************************************************************
+ * gets the direction of light
+ * 
+ *******************************************************************/
 
 Vec3 Arealight::getDirection(Record& recentHits) {
 	samplePoint = objectPtr->sample();    // used in the G function
@@ -87,8 +88,10 @@ Vec3 Arealight::getDirection(Record& recentHits) {
 	return (wi);
 }
 
-
-// --------------------------------------------------------------- L
+/*******************************************************************
+ * Gets the color of light at the hit location to add to the shading
+ * 
+ *******************************************************************/
 
 Color Arealight::L(Record& recentHits) {
 	float ndotd = -lightNormal*wi; 
@@ -100,7 +103,10 @@ Color Arealight::L(Record& recentHits) {
 }
 
 
-// ---------------------------------------------------------------- in_shadow	
+/*******************************************************************
+ * checks if the point is in a shadow or not
+ * 
+ *******************************************************************/
 
 bool Arealight::inShadow(const Ray& ra, const Record& recentHits) const {
 	double t = kHugeValue;
@@ -122,8 +128,9 @@ bool Arealight::inShadow(const Ray& ra, const Record& recentHits) const {
 }
 
 
-// ---------------------------------------------------------------- G
-// G is part of the geometric factor
+/*******************************************************************
+ * Returns the geometric factor of the light
+ *******************************************************************/
 
 float Arealight::G(const Record& recentHits)  {
 	float ndotd = -lightNormal*wi;
@@ -132,8 +139,6 @@ float Arealight::G(const Record& recentHits)  {
 	return (ndotd / d2);
 }
 
-
-// ---------------------------------------------------------------- pdf
 
 float Arealight::pdf(const Record& recentHits) const {
 	return (objectPtr->pdf(recentHits));

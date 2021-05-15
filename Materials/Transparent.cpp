@@ -61,6 +61,15 @@ std::shared_ptr<Transparent> Transparent::Clone() const
 	return std::make_shared<Transparent>(*this);
 }
 
+
+/*******************************************************************
+ * The shade funtion for transparency
+ * first gather the shading from a phong shade
+ * Check if there is total internal reflection
+ * if there is, trace with the reflected ray on the inside
+ * Else trace with the transmitted ray and with the reflected ray
+ * 
+ *******************************************************************/
 Color Transparent::shade(Record& recentHits)
 {
 	Color L(Phong::shade(recentHits));

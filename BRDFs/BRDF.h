@@ -6,7 +6,18 @@
 #include "../Utilities/Record.h"
 #include "../Samplers/Sampler.h"
 
-
+/*******************************************************************
+ * Class BRDF
+ * 
+ * Base class of all Bidirectional reflectance distribution functions
+ * Defines light for opaque surfaces
+ * 
+ * Variables
+ * 
+ * shared_Ptr<Sampler> samplerptr - pointer to the sampler
+ * 
+ * 
+ *******************************************************************/
 class BRDF{
     public:
         shared_ptr<Sampler> samplerPtr;

@@ -79,6 +79,15 @@ shared_ptr<Phong> Phong::clone() const
 	return make_shared<Phong>(*this);
 }
 
+
+/*******************************************************************
+ * Phong shading
+ * 
+ * First grab the ambient component
+ * then go though each light check if it is in shadow, if it is not
+ * in a shadow then add the diffuse, and specular components
+ * 
+ *******************************************************************/
 Color Phong::shade(Record& recentHits)
 {
 	Vec3 wo = -recentHits.sceneRay.dir;

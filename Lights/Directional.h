@@ -4,6 +4,16 @@
 #include "Light.h"
 #include "../Utilities/Scene.h"
 
+/*******************************************************************
+ * Class - Directional inherits from Light
+ * 
+ * a light from off screen that emits in a single direction
+ * 
+ * ls - Scale Radiance
+ * Col - color of emitted light
+ * Dir - direction of light
+ * 
+ *******************************************************************/
 class Directional : public Light
 {
 public:

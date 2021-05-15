@@ -5,6 +5,13 @@
 #include "../BRDFs/Lambertian.h"
 #include "../Utilities/Scene.h"
 
+
+/*******************************************************************
+ * Class - Matte
+ * 
+ * This is a matte material that has no specular component
+ * 
+ *******************************************************************/
 class Matte : public Material{
     public:
         shared_ptr<Lambertian> ambientBRDF;

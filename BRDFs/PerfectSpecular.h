@@ -4,6 +4,18 @@
 #include "BRDF.h"
 #include "../Utilities/Normal.h"
 
+
+/*******************************************************************
+ * Class - PerfectSpecular inherits from BRDF
+ * 
+ * the brdf for Mirror like reflective surfaces.
+ * 
+ * Variables
+ * 
+ * Float kr - the reflection coefficient
+ * Color cr - the reflection color
+ * 
+ *******************************************************************/
 class PerfectSpecular: public BRDF 
 {
 	public:
@@ -32,26 +44,26 @@ class PerfectSpecular: public BRDF
 				
 	private:
 	
-		float		kr;			// reflection coefficient
-		Color 	cr;			// the reflection colour
+		float		kr;			
+		Color 	cr;			
 };
 
-
-// -------------------------------------------------------------- set_kr
+/*******************************************************************
+ * Setters
+ * 
+ *******************************************************************/
 
 inline void PerfectSpecular::set_kr(const float k) {
 	kr = k;
 }
 
 
-// -------------------------------------------------------------- set_cr
+
 
 inline void PerfectSpecular::set_cr(const Color& c) {
 	cr = c;
 }
 
-
-// ---------------------------------------------------------------- set_cr
 
 inline void	PerfectSpecular::set_cr(const double r, const double g, const double b) {
 	cr.red = r; 
@@ -60,7 +72,7 @@ inline void	PerfectSpecular::set_cr(const double r, const double g, const double
 }
 
 
-// ---------------------------------------------------------------- set_cr
+
 
 inline void	PerfectSpecular::set_cr(const double c) {
 	cr.red = c; 

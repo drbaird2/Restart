@@ -7,6 +7,18 @@
 #include "../Objects/Object.h"
 #include "../Utilities/Scene.h"
 
+/*******************************************************************
+ * Class - Arealight inherits from Light
+ * 
+ * This is a object on the scene that has an emissive material and 
+ * provides light in a localized area for softer shadows.
+ * 
+ * Variables
+ * Objectptr - the object that becomes a light
+ * materialptr - the emissive light material
+ * 
+ * 
+ *******************************************************************/
 class Arealight: public Light {	
 	public:
 	
@@ -42,8 +54,6 @@ class Arealight: public Light {
 	
 };
 
-
-// --------------------------------------------------------------- set_object
 
 inline void Arealight::setObject(shared_ptr<Object> objPtr) {
 	objectPtr = objPtr;

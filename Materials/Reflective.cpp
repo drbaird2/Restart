@@ -62,6 +62,12 @@ Reflective::~Reflective(void) {
 
 // ------------------------------------------------------------------------------------ shade 
 
+/*******************************************************************
+ * Shade for reflection. get the illumination from a phong shade
+ * then reflect the ray and trace again until you've reached maximum
+ * depth.
+ * 
+ *******************************************************************/
 Color Reflective::shade(Record& recentHits) {	
 	Color L(Phong::shade(recentHits));  // direct illumination
 	

@@ -45,7 +45,11 @@ AABB::~AABB()
 }
 
 
-
+/*******************************************************************
+ * The intersection function for AABB
+ * Check if the ray intersects any of the axis, and then find which
+ * is the closest
+ *******************************************************************/
 bool AABB::intersect(const Ray& ra, double& t, Record& recentHits) const
 {
 	Point3 origin = Point3(ra.orig);
@@ -149,6 +153,10 @@ int AABB::longest_axis() const{
 	}
 }
 
+/*******************************************************************
+ * Given two AABB form a surrounding box that contains the two
+ * 
+ *******************************************************************/
 AABB AABB::surroundingBox(AABB box0, AABB box1){
 	Point3 small(fmin(box0.p0.xPoint, box1.p0.xPoint),
                  fmin(box0.p0.yPoint, box1.p0.yPoint),

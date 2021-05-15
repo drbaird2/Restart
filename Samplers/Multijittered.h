@@ -3,6 +3,14 @@
 
 #include "Sampler.h"
 
+/*******************************************************************
+ * Class - MultiJittered - Inherits from Sampler
+ * 
+ * A combination of N-Rooks and jittered sampling that shuffles
+ * samples within divided cells to randomize in both dimensions
+ * and withing the whole shape.
+ *******************************************************************/
+
 class MultiJittered :public Sampler{
     public:
 	    MultiJittered();

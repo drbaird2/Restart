@@ -9,6 +9,25 @@
 
 using namespace std;
 
+/*******************************************************************
+ * Class - Sampler
+ * 
+ * Base class for all samplers. Used to gather various samples of a 
+ * particular shape or area
+ * 
+ * Variables
+ * 
+ * int 				numSamples - total number of samples in a set
+ * int 				numSets - total number of sets
+ * vector<Point2> 	samples - vector of samples on square
+ * vector<Point2> 	diskSamples - vector of samples on unit disk
+ * vector<Point3> 	hemisphereSamples - vector of samples on hemisphere
+ * vector<int> 		shuffledIndices - vector of randomized indices
+ * unsigned long 	count
+ * int 				jump
+ * 
+ *******************************************************************/
+
 class Sampler{
     public:
         int numSamples;
@@ -36,9 +55,7 @@ class Sampler{
 	    void shuffleXCoordinates();
 	    void shuffleYCoordinates();
 
-	//convert disk from square
 	    void mapSamplesToUnitDisk();
-	//convert hemisphere from spuare
 	    void mapSamplesToHemisphere(const float p);
 
 	    Point2 sampleUnitSquare();

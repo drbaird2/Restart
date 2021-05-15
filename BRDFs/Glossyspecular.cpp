@@ -3,6 +3,11 @@
 #include "../Utilities/Constants.h"
 #include <cmath>
 
+
+/*******************************************************************
+ * Constructors
+ * 
+ *******************************************************************/
 GlossySpecular::GlossySpecular()
 	: BRDF()
 	, Ks(0.0)
@@ -21,7 +26,6 @@ std::shared_ptr<GlossySpecular> GlossySpecular::clone() const
 	return make_shared<GlossySpecular>(*this);
 }
 
-// reciprofical glossy specular BRDF (Lewis,1994)
 
 Color GlossySpecular::func(const Record& recentHits, const Vec3& wo, const Vec3& wi) const
 {
@@ -39,6 +43,10 @@ Color GlossySpecular::func(const Record& recentHits, const Vec3& wo, const Vec3&
 	return L;
 }
 
+/*******************************************************************
+ * Sample for getting the Specular component
+ * 
+ *******************************************************************/
 Color GlossySpecular::sampleFunc(const Record& recentHits, const Vec3& wo, Vec3& wi, float& pdf) const
 {
 	float nDotWo = recentHits.sceneNormal * wo;

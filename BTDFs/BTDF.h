@@ -7,6 +7,15 @@
 #include "../Utilities/Vec3.h"
 #include "../Utilities/Record.h"
 
+
+/*******************************************************************
+ * Class BTDF
+ * 
+ * Base class for all Bidirectional Tranmittance distribution functions
+ * like a BRDF but for the refraction and transmission of light underneath
+ * a surface. For transparent materials
+ * 
+ *******************************************************************/
 class BTDF {
 	public:
 	

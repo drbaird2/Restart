@@ -8,6 +8,15 @@
 
 class Record;
 
+/*******************************************************************
+ * Class - Light
+ * 
+ * Base Class for all lights
+ * 
+ * Variable
+ * isshadow - denotes if this light is casting shadows or not.
+ * 
+ *******************************************************************/
 class Light{
     public:
         bool isShadow;

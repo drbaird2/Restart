@@ -82,8 +82,8 @@ void Scene::build()
 	tracerPtr = make_shared<Whitted>(this);
 
 	shared_ptr<Pinhole> pinholePtr = make_shared<Pinhole>();
-	pinholePtr->setEye(-8, 25, 60);
-	pinholePtr->setLookAt(1, 4, 0);
+	pinholePtr->setEye(0, 0, 15);
+	pinholePtr->setLookAt(0, 0, -5);
 	pinholePtr->setViewDistance(2400);
 	//pinholePtr->setZoom(1.0);
 	pinholePtr->ComputeUVW();
@@ -187,6 +187,15 @@ void Scene::build()
 	glass->SetIor(1.5);			
 	glass->SetKr(0.1);
 	glass->SetKt(0.9);
+
+	shared_ptr<Phong> PhongBlue = make_shared<Phong>();
+	PhongBlue->SetKa(0.5);
+	PhongBlue->SetKd(0.35);
+	PhongBlue->SetCd(solidblue);
+	PhongBlue->SetCs(white);
+	PhongBlue->SetKs(0.2);
+	PhongBlue->SetExp(2000);
+
 	
 	
 	//Materials used in Mirror/Metal
@@ -225,7 +234,7 @@ void Scene::build()
 
 //This is the Transparent Test Objects
 
-	shared_ptr<Sphere> sphere_ptr1 = make_shared<Sphere>(Point3(4-4, 4, -8-2), 3); 
+	/* shared_ptr<Sphere> sphere_ptr1 = make_shared<Sphere>(Point3(4-4, 4, -8-2), 3); 
 	sphere_ptr1->setMaterial(matteRed);
 	addObject(sphere_ptr1);
 
@@ -253,7 +262,7 @@ void Scene::build()
 
 	shared_ptr<Box> box3 = make_shared<Box>(Point3( -6 + 2, 0, 3-4), Point3(4-1,6+4,4-4));
 	box3->setMaterial(glass);
-	addObject(box3);
+	addObject(box3); */
 
 	//This is the Mirror/Metal test objects
 	/* shared_ptr<Sphere> sphere_ptr1 = make_shared<Sphere>(Point3(0, 50, -120), 50); 
@@ -357,14 +366,14 @@ void Scene::build()
 	plane_ptr->setMaterial(matteRed);
 	addObject(plane_ptr); */
 
-/* shared_ptr<Obj> cow = make_shared<Obj>("cow.obj");
-cow->update_vertex_normals(matteBlue);
+shared_ptr<Obj> cow = make_shared<Obj>("cow.obj");
+cow->update_vertex_normals(PhongBlue);
 for(shared_ptr<Triangle> face:cow->getMeshes()){
 	addObject(face);
-} */
-	/* shared_ptr<BVH> tree = make_shared<BVH>(*this);
+}
+	shared_ptr<BVH> tree = make_shared<BVH>(*this);
 	objects.clear();
-	addObject(tree); */
+	addObject(tree);
 
 }
 

@@ -1,9 +1,21 @@
 #ifndef PERFECTTRANSMITTER_H
 #define PERFECTTRANSMITTER_H
 
-// this implements perfect specular transmission for transparent materials
 
 #include "BTDF.h"
+
+/*******************************************************************
+ * Class PerfectTransmitter - inherits from BTDF
+ * 
+ * A BTDF that is for completely transparent matterials like glass
+ * and air
+ * 
+ * Variables
+ * 
+ * float kt - Transmission coefficient
+ * float ior - index of refraction (Air -1, Glass - 1.3 to 1.7, Diamond 2.4)
+ * 
+ *******************************************************************/
 
 class PerfectTransmitter: public BTDF {
 	public:
@@ -32,18 +44,19 @@ class PerfectTransmitter: public BTDF {
 				
 	private:
 	
-		float	kt;			// transmission coefficient
-		float	ior;		// index of refraction
+		float	kt;			
+		float	ior;		
 };
 
-
-// -------------------------------------------------------------- set_kt
+/*******************************************************************
+ * Setters
+ * 
+ *******************************************************************/
 
 inline void PerfectTransmitter::set_kt(const float k) {
 	kt = k;
 }
 
-// -------------------------------------------------------------- set_ior
 
 inline void PerfectTransmitter::set_ior(const float eta) {
 	ior = eta;

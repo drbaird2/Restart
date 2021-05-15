@@ -6,6 +6,12 @@
 #include "../BRDFs/GlossySpecular.h"
 #include "../Utilities/Scene.h"
 
+/*******************************************************************
+ * Class - Phong
+ * 
+ * For the phong shading
+ * 
+ *******************************************************************/
 class Phong : public Material
 {
 public:

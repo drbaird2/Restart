@@ -3,6 +3,11 @@
 
 #include "Tracer.h"
 
+/*******************************************************************
+ * class - Raycast - inherits from Tracer, the main basic raycasting tracer
+ * 
+ * 
+ *******************************************************************/
 class Raycast : public Tracer
 {
 public:
@@ -10,7 +15,6 @@ public:
 	Raycast(Scene* sceneRef);
 
 	virtual ~Raycast();
-	//Color traceRay(const Ray& ra) const override;
 	Color traceRay(const Ray& ra ,const int depth) const override;
 };
 

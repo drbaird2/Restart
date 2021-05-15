@@ -39,6 +39,11 @@ Camera& Camera::operator= (const Camera& rhs) {
     return make_shared<Camera>((*this)); 
 } */
 
+/*******************************************************************
+ * Compute the UVW base using the eye, lookat, and updir vectors
+ * 
+ *******************************************************************/
+
 void Camera::ComputeUVW()
 {
 	W = eye - lookAt;

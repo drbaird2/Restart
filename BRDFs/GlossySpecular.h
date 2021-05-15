@@ -3,6 +3,13 @@
 
 #include "BRDF.h"
 
+
+/*******************************************************************
+ * Class - GlossySpecular inherits from BRDF
+ * 
+ * The brdf for the specular portion of phong shading
+ * 
+ *******************************************************************/
 class GlossySpecular :public BRDF
 {
 public:

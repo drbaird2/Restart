@@ -96,6 +96,11 @@ Color Emissive::globalShade(Record& recentHits)
 	}
 }
 
+/*******************************************************************
+ * Primary shade function is the area light function
+ * Make sure the ray is pointing out to grab the color
+ * 
+ *******************************************************************/
 Color Emissive::areaLightShade(Record& recentHits)
 {
 	if (-recentHits.sceneNormal*recentHits.sceneRay.dir > 0.0)

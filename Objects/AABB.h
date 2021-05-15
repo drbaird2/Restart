@@ -10,6 +10,12 @@ class Record;
 
 using namespace std;
 
+/*******************************************************************
+ * Axis Aligned Bounding Boxes
+ * 
+ * Used in the BVH, Requires two points to form the box.
+ * 
+ *******************************************************************/
 class AABB {
 public:
     AABB();

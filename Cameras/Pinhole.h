@@ -6,6 +6,13 @@
 
 class Scene;
 
+/*******************************************************************
+ * Class - Pinhole inherits from Camera
+ * 
+ * a pinhole or movable camera. this is what is used in most of the 
+ * renders. Uses a single eye point but different directional rays
+ * 
+ *******************************************************************/
 class Pinhole : public Camera{
     public:
         double dist;

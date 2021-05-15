@@ -6,6 +6,11 @@
 #include <algorithm>
 #include <cmath>
 
+
+/*******************************************************************
+ * Constructors
+ * 
+ *******************************************************************/
 Sampler::Sampler():
     numSamples(1),
 	numSets(83),
@@ -47,6 +52,11 @@ Sampler::Sampler(const Sampler& s):
 
 }
 
+/*******************************************************************
+ * Assignment opperator
+ * 
+ *******************************************************************/
+
 Sampler& Sampler::operator=(const Sampler& rhs)
 {
 	if (this == &rhs)
@@ -66,6 +76,12 @@ Sampler& Sampler::operator=(const Sampler& rhs)
 
 Sampler::~Sampler()
 {}
+
+/*******************************************************************
+ * setupShuffledIndices - Used to create a series of randomized 
+ * 							sample sets
+ * 
+ *******************************************************************/
 
 void Sampler::setupShuffledIndices(){
 	//reserve vector
@@ -98,7 +114,10 @@ int Sampler::getNumSamples(){
 	return numSamples;
 }
 
-
+/*******************************************************************
+ * Sample unit components to generate the actual samples
+ * 
+ *******************************************************************/
 Point2 Sampler::sampleUnitSquare(){
 	//random
 	random_device rd;
@@ -112,6 +131,7 @@ Point2 Sampler::sampleUnitSquare(){
 	return samples[jump + shuffledIndices[jump + count++ % numSamples]];
 
 }
+
 
 Point2 Sampler::sampleUnitDisk(){
 	//random
@@ -127,6 +147,7 @@ Point2 Sampler::sampleUnitDisk(){
 
 }
 
+
 Point3 Sampler::sampleHemisphere(){
 	//random
 	random_device rd;
@@ -140,6 +161,12 @@ Point3 Sampler::sampleHemisphere(){
 	return hemisphereSamples[jump + shuffledIndices[jump + count++ % numSamples]];
 
 }
+
+/*******************************************************************
+ * Shufflers - shuffle the various x and y coordinates of the 
+ * 				generated samples
+ * 
+ *******************************************************************/
 
 void Sampler::shuffleXCoordinates(){
 	random_device rd;
@@ -173,6 +200,10 @@ void Sampler::shuffleYCoordinates(){
 	}
 }
 
+/*******************************************************************
+ * Map the taken samples from a unit square to a unit disk
+ * 
+ *******************************************************************/
 void Sampler::mapSamplesToUnitDisk(){
 	int size = samples.size();
 	float r, phi;
@@ -233,6 +264,10 @@ void Sampler::mapSamplesToUnitDisk(){
 	samples.erase(samples.begin(), samples.end());
 }
 
+/*******************************************************************
+ * Map the samples from a unit square to a hemisphere
+ * 
+ *******************************************************************/
 void Sampler::mapSamplesToHemisphere(const float e)
 {
 	int size = samples.size();

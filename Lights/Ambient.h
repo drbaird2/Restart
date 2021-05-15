@@ -3,6 +3,12 @@
 
 #include "Light.h"
 
+/*******************************************************************
+ * Class Ambient inherits from Light
+ * 
+ * Teh ambient light that adds to all portions of the scene.
+ * 
+ *******************************************************************/
 class Ambient : public Light{
     public:
         double ls;

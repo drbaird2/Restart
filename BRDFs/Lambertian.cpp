@@ -2,6 +2,11 @@
 #include "../Utilities/Constants.h"
 #include "../Samplers/Multijittered.h"
 
+/*******************************************************************
+ * Constructors
+ * 
+ *******************************************************************/
+
 Lambertian::Lambertian():
 	BRDF(),
 	kd(0.0),
@@ -39,6 +44,13 @@ shared_ptr<Lambertian> Lambertian::clone(){
 Color Lambertian::func(const Record& recentHits, const Vec3& wo, const Vec3& wi) const{
 	return  cd * kd * invPI;
 }
+
+
+/*******************************************************************
+ * SampleFunc - When light strikes a diffuse surface it will scatter
+ * into a hemisphere
+ * 
+ *******************************************************************/
 
 Color Lambertian::sampleFunc(const Record& recentHits, const Vec3& wo, Vec3& wi, float& pdf) const{
 	Vec3 w = recentHits.sceneNormal;

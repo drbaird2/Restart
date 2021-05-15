@@ -5,6 +5,13 @@
 #include "Phong.h"
 #include "../BRDFs/PerfectSpecular.h"
 
+/*******************************************************************
+ * Class - Reflective
+ * 
+ * For reflective materials like mirrors and metal
+ * just requires a perfectspecular component
+ * 
+ *******************************************************************/
 class Reflective: public Phong {	
 	public:
 	

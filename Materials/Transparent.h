@@ -5,6 +5,18 @@
 #include "../BRDFs/PerfectSpecular.h"
 #include "../BTDFs/PerfectTransmitter.h"
 
+
+/*******************************************************************
+ * Transparent
+ * 
+ * a varient of the phong material
+ * Is used for any type of  fully trasparent material for refraction
+ * of light
+ * 
+ * requires a PerfectSpecular BRDF
+ * and a PerfectTransmitter BTDF
+ * 
+ *******************************************************************/
 class Transparent: public Phong {	
 	public:
 

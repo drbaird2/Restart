@@ -8,6 +8,12 @@
 class Scene;
 class Record;
 
+/*******************************************************************
+ * The BVH acceleration Scheme
+ * Each node contains the information of it's box
+ * and then the left and right children contained in that box
+ * 
+ *******************************************************************/
 class BVH : public Object {
     public:
         shared_ptr<Object> left;

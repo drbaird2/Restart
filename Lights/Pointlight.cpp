@@ -92,6 +92,13 @@ Color PointLight::L(Record& recentHits)
 	return col * ls;
 }
 
+/*******************************************************************
+ * Function to check if the colided ray is in a shadow go though each
+ * object and run it's shadow intersection
+ * 
+ * Uses the distance between the light and rays origin point
+ * 
+ *******************************************************************/
 bool PointLight::inShadow(const Ray& ra, const Record& recentHits) const
 {
 	double t;

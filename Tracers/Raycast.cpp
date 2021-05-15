@@ -5,6 +5,10 @@
 #include "../Utilities/Ray.h"
 #include "../Objects/Sphere.h"
 
+/*******************************************************************
+ * Constructors
+ * 
+ *******************************************************************/
 Raycast::Raycast()
 	: Tracer()
 {}
@@ -20,26 +24,17 @@ Raycast::~Raycast()
 
 }
 
-/* Color Raycast::traceRay(const Ray& ra) const
-{
-	
-	Record recentHits(scenePtr->intersect(ra));
-
-	if (recentHits.colided)
-	{
-		return (recentHits.col );
-	}
-	else
-	{
-		return (scenePtr->backgroundColor);
-	}
-	
-} */
-
+/*******************************************************************
+ * traceRay(Ray, Depth) - the main function. Takes a Ray and the 
+ * 							current depth and returns a color
+ * 
+ *******************************************************************/
 Color Raycast::traceRay(const Ray& ra, const int depth) const
 {
-	Record recentHits(scenePtr->intersect(ra));
 
+	//check and see if there was a collision and store it in the hit record
+	Record recentHits(scenePtr->intersect(ra));		
+	//if there is a collision return the color from the materials shade function. else return the background color
 	if (recentHits.colided)
 	{
 		recentHits.sceneRay = ra;

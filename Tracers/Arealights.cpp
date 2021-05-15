@@ -1,5 +1,11 @@
 #include "AreaLights.h"
 
+
+/*******************************************************************
+ * Constructors
+ * 
+ *******************************************************************/
+
 AreaLights::AreaLights()
 	: Tracer()
 {
@@ -13,6 +19,14 @@ AreaLights::AreaLights(Scene* scene)
 AreaLights::~AreaLights()
 {
 }
+
+/*******************************************************************
+ * traceRay(Ray, Depth) - take a ray and a depth and return the 
+ * 						color of the pixel. in particular we will be 
+ * 						using the arealight version of the materials 
+ * 						shade function
+ * 
+ *******************************************************************/
 
 Color AreaLights::traceRay(const Ray& ray, const int depth) const
 {
@@ -39,6 +53,14 @@ Color AreaLights::traceRay(const Ray& ray, const int depth) const
 	}
 }
 
+/*******************************************************************
+ * traceRay(Ray, Depth) - take a ray and a depth and return the 
+ * 						color of the pixel. in particular we will be 
+ * 						using the arealight version of the materials 
+ * 						shade function. Also keeps track of the 
+ * 						closest t value.
+ * 
+ *******************************************************************/
 Color AreaLights::traceRay(const Ray& ray, double& tMin, const int depth) const
 {
 	if (depth > scenePtr->vp.maxDepth)

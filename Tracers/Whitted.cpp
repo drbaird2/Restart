@@ -1,36 +1,37 @@
-// 	Copyright (C) Kevin Suffern 2000-2007.
-//	This C++ code is for non-commercial purposes only.
-//	This C++ code is licensed under the GNU General Public License Version 2.
-//	See the file COPYING.txt for the full license.
-
-
 #include "Whitted.h"
 #include "../Utilities/Scene.h"
 #include "../Utilities/Record.h"
 #include "../Materials/Material.h"
 
-// -------------------------------------------------------------------- default constructor
+/*******************************************************************
+ * Constructors
+ * 
+ *******************************************************************/
+
 
 Whitted::Whitted(void)
 	: Tracer()
 {}
 
-
-// -------------------------------------------------------------------- constructor
 		
 Whitted::Whitted(Scene* sceneRef)
 	: Tracer(sceneRef)
 {}
 
 
-// -------------------------------------------------------------------- destructor
 
 Whitted::~Whitted(void) {}
 
-
-// -------------------------------------------------------------------- trace_ray
+/*******************************************************************
+ * traceRay(Ray, Depth) - take a ray and a depth and return the 
+ * 						color of the pixel
+ * 
+ *******************************************************************/
 
 Color Whitted::traceRay(const Ray& ra, const int depth) const {
+
+	//check if the depth is past the maximum allowed, if it is return black
+	//else run a regular trace and update the depth.
 	if (depth > scenePtr->vp.maxDepth)
 		return(black);
 	else {
@@ -46,6 +47,13 @@ Color Whitted::traceRay(const Ray& ra, const int depth) const {
 	}																																			
 }
 
+/*******************************************************************
+ * traceRay(Ray, tmin, Depth) - take a ray, tmin, and depth and return the 
+ * 						color of the pixel
+ * Main difference from above is that we will also be updating the t 
+ * with each collision.
+ * 
+ *******************************************************************/
 Color Whitted::traceRay(const Ray& ray, double& tMin, const int depth) const
 {
 	if (depth > scenePtr->vp.maxDepth)

@@ -4,6 +4,18 @@
 #include "Light.h"
 #include "../Utilities/Scene.h"
 
+/*******************************************************************
+ * Class - PointLight inherits from light
+ * a light that shines from a particular origin in all directions
+ * 
+ * Variables
+ * 
+ * ls - radiance
+ * Location - origin of light
+ * color - color of emitted light
+ * 
+ * 
+ *******************************************************************/
 class PointLight : public Light{
     public:
         double ls;

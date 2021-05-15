@@ -91,6 +91,10 @@ Color Directional::L(Record& recentHits)
 	return col * ls;
 }
 
+/*******************************************************************
+ * Checks if the ray collides with an object in a shadow.
+ * 
+ *******************************************************************/
 bool Directional::inShadow(const Ray& ra, const Record& recentHits) const
 {
 	double t;

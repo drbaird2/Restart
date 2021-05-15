@@ -3,6 +3,12 @@
 
 #include "Material.h"
 
+/*******************************************************************
+ * Emissive
+ * 
+ * A material that emmits light
+ * 
+ *******************************************************************/
 class Emissive : public Material
 {
 public:

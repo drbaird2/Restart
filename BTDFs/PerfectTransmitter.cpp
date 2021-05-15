@@ -1,6 +1,9 @@
 #include "PerfectTransmitter.h"
 
-// ------------------------------------------------------------------- default constructor
+/*******************************************************************
+ * Constructors
+ * 
+ *******************************************************************/
 
 PerfectTransmitter::PerfectTransmitter(void)
 	: 	BTDF(),
@@ -9,8 +12,6 @@ PerfectTransmitter::PerfectTransmitter(void)
 {}
 
 
-// ------------------------------------------------------------------- copy constructor
-
 PerfectTransmitter::PerfectTransmitter(const PerfectTransmitter& pt)
 	: 	BTDF(pt),
 		kt(pt.kt), 
@@ -18,20 +19,16 @@ PerfectTransmitter::PerfectTransmitter(const PerfectTransmitter& pt)
 {}
 
 
-// ------------------------------------------------------------------- clone
-
 shared_ptr<PerfectTransmitter> PerfectTransmitter::clone(void) {
 	return (make_shared< PerfectTransmitter>(*this));
 }
 
 
-// ------------------------------------------------------------------- destructor
-
 PerfectTransmitter::~PerfectTransmitter(void) {}
 
-
-
-// ------------------------------------------------------------------- assignment operator
+/*******************************************************************
+ * Assignment Operator
+ *******************************************************************/
 		
 PerfectTransmitter&	PerfectTransmitter::operator= (const PerfectTransmitter& rhs) {
 	if (this == &rhs)
@@ -43,9 +40,11 @@ PerfectTransmitter&	PerfectTransmitter::operator= (const PerfectTransmitter& rhs
 	return (*this);
 }
 
-
-// ------------------------------------------------------------------- tir
-// tests for total internal reflection
+/*******************************************************************
+ * tir - Given a collison in a hit record, test if there is total
+ * internal reflection
+ * 
+ *******************************************************************/
 
 bool PerfectTransmitter::tir(const Record& recentHits) const {
 	Vec3 wo(-recentHits.sceneRay.dir); 
@@ -59,17 +58,19 @@ bool PerfectTransmitter::tir(const Record& recentHits) const {
 }	
 
 
-// ------------------------------------------------------------------- f
-
 Color PerfectTransmitter::func(const Record& recentHits, const Vec3& wo, const Vec3& wi) const {
 	return (black);
 }
 
 
-// ------------------------------------------------------------------- sample_f
-// this computes the direction wt for perfect transmission
-// and returns the transmission coefficient
-// this is only called when there is no total internal reflection
+/*******************************************************************
+ * SampleFunc
+ * If there is no total internal reflection, checks if the ray is
+ * in the object if it is reverse it and return the transmission
+ * coefficient
+ * 
+ *******************************************************************/
+
 
 Color PerfectTransmitter::sampleFunc(const Record& recentHits, const Vec3& wo, Vec3& wt) const {
 	
@@ -89,9 +90,6 @@ Color PerfectTransmitter::sampleFunc(const Record& recentHits, const Vec3& wo, V
 	
 	return (kt / (eta * eta) * white / fabs(recentHits.sceneNormal * wt));
 }
-
-
-// ------------------------------------------------------------------- rho
 
 Color PerfectTransmitter::rho(const Record& recentHits, const Vec3& wo) const {
 	return (black);

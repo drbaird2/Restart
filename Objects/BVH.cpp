@@ -2,6 +2,14 @@
 
 #include <algorithm>
 
+/*******************************************************************
+ * When making the tree take the object list, break it in two
+ * and recurse until you reach either one or two objects. if there is
+ * only one child set both the left and right objects to be the same.
+ * Then create a bounding box around both children and store that in box
+ * 
+ * 
+ *******************************************************************/
 BVH::BVH(vector<shared_ptr<Object>>& objectList, size_t start, size_t end)
 {
 //    std::cout << "new node"<< endl;
@@ -65,6 +73,11 @@ BVH::BVH(Scene& wonderland):
 
 
 
+/*******************************************************************
+ * The intersection funtion for a node. Intersect with the left and right
+ * objects, if either collides then there was a collision with this box.
+ * 
+ *******************************************************************/
 bool BVH::intersect(const Ray& ra, double& t, Record& recentHits){
     if(!box.intersect(ra,t,recentHits)){
         return false;

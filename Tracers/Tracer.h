@@ -8,6 +8,13 @@
 
 class Scene;
 
+/*******************************************************************
+ * class - Tracer
+ * 
+ * Base class for the variety of tracer types
+ * 
+ *******************************************************************/
+
 class Tracer{
     public:
         Scene* scenePtr;

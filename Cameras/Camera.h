@@ -6,6 +6,19 @@
 #include "..//Utilities//Vec3.h"
 #include "../Utilities/Point3.h"
 
+
+/*******************************************************************
+ * Class - Camera
+ * 
+ * Base class for all cameras
+ * 
+ * Variables
+ * Eye - location of the camera
+ * Lookat - What point the camera is looking at
+ * U, V, W - the variables that form the basis to shift to world coordinates.
+ * Updir - the direction we consider the top of the world for pitch and roll
+ * 
+ *******************************************************************/
 class Camera {
     public:
         Point3 eye, lookAt;

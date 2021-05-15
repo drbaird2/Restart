@@ -44,6 +44,11 @@ void Orthographic::setZWindow(const double zw)
 	zWindow = zw;
 }
 
+/*******************************************************************
+ * The Renderscene function for orthographic, uses a single direction vector
+ * but different eye points for each pixel.
+ * 
+ *******************************************************************/
 void Orthographic::renderScene(Scene& scenePtr)
 {
 	Color pixelColor;
